@@ -1,33 +1,26 @@
-/* some style */
-
 body {
   margin: 0px;
   padding: 0px;
 }
 
 .chat-container {
-	display: grid;
-	width: 100vw;
-	height: 100vh;
-	grid-template-rows: 50px 0px 1fr  150px;
-	grid-template-columns: 1fr;
-	grid-template-areas: "header"
-			     "sidebar"
-			     "history"
-			     "text-input";
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: 50px 0px 1fr  150px;
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "sidebar" "history" "text-input";
 }
 
 @media only screen and (min-width: 400px)  {
-	.chat-container {
-		display: grid;
-		width: 100vw;
-		height: 100vh;
-		grid-template-rows: 50px 1fr 150px;
-		grid-template-columns: 200px 1fr;
-		grid-template-areas: "header header"
-				     "sidebar history"
-				     "text-input text-input";
-	}
+    .chat-container {
+        display: grid;
+        width: 100vw;
+        height: 100vh;
+        grid-template-rows: 50px 1fr 150px;
+        grid-template-columns: 200px 1fr;
+        grid-template-areas: "header header" "sidebar history" "text-input text-input";
+    }
 }
 
 .header {
@@ -61,9 +54,7 @@ body {
     height: 100vh;
     grid-template-rows: 1fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-areas: ". . ."
-                         ". login ."
-                         ". . .";
+    grid-template-areas: ". . ." ". login ." ". . .";
 }
 
 .login {

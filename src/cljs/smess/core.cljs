@@ -5,10 +5,6 @@
 
 (goog-define ws-url "ws://localhost:3449/ws")
 
-(enable-console-print!)
-
-(println ws-url)
-
 (defonce app-state (atom {:text "Hello world!"
                           :active-panel :login
                           :user "test"}))
@@ -18,12 +14,13 @@
 (defonce send-chan (async/chan))
 
 ;; Websocket Routines
-
 (defn send-msg
+  "Send a message over the websocket."
   [msg]
   (async/put! send-chan msg))
 
 (defn send-msgs
+  "Send multiple messages over the websocket."
   [svr-chan]
   (async/go-loop []
     (when-let [msg (async/<! send-chan)]
@@ -31,6 +28,7 @@
       (recur))))
 
 (defn receive-msgs
+  "Receive messages from the websocket."
   [svr-chan]
   (async/go-loop []
     (if-let [new-msg (:message (<! svr-chan))]
@@ -43,19 +41,23 @@
         (recur))
       (println "Websocket closed"))))
 
-(defn setup-websockets! []
+(defn setup-websockets!
+  "Connect websockets to one another."
+  []
   (async/go
     (let [{:keys [ws-channel error]} (async/<! (ws-ch ws-url))]
       (if error
-        (println "Something went wrong with the websocket")
+        (println (str "Received the websocket error " error))
         (do
           (send-msg {:m-type :new-user
                      :msg (:user @app-state)})
           (send-msgs ws-channel)
           (receive-msgs ws-channel))))))
-;; View Code
 
-(defn chat-input []
+;; View
+(defn chat-input
+  "Allow users to input text and submit it to send messages."
+  []
   (let [v (atom nil)]
     (fn []
       [:div {:class "text-input"}
@@ -77,15 +79,17 @@
 
 (defn chat-history []
   (reagent/create-class
-    {:render (fn []
-               [:div {:class "history"}
-                (for [m @msg-list]
-                  ^{:key (:id m)} [:p (str (:user m) ": " (:msg m))])])
-     :component-did-update (fn [this]
-                             (let [node (reagent/dom-node this)]
-                               (set! (.-scrollTop node) (.-scrollHeight node))))}))
+   {:render (fn []
+              [:div {:class "history"}
+               (for [m @msg-list]
+                 ^{:key (:id m)} [:p (str (:user m) ": " (:msg m))])])
+    :component-did-update (fn [this]
+                            (let [node (reagent/dom-node this)]
+                              (set! (.-scrollTop node) (.-scrollHeight node))))}))
 
-(defn login-view []
+(defn login-view
+  "Allows users to pick a username and enter the chat."
+  []
   (let [v (atom nil)]
     (fn []
       [:div {:class "login-container"}
@@ -104,22 +108,28 @@
          [:button {:type "submit"
                    :class "button-primary"} "Start chatting"]]]])))
 
-(defn sidebar []
-  [:div {:class "sidebar"}
-   [:h5 "Active Users:"]
-   (into [:ul]
-         (for [[k v] @users]
-           ^{:key k} [:li v]))])
+;; (defn sidebar
+;;   "Shows all of the users currently in the channel."
+;;   []
+;;   [:div {:class "sidebar"}
+;;    [:h5 "Active Users:"]
+;;    (into [:ul]
+;;          (for [[k v] @users]
+;;            ^{:key k} [:li v]))])
 
-(defn chat-view []
+(defn chat-view
+  "Displays all of the chat history."
+  []
   [:div {:class "chat-container"}
    [chat-history]
    [chat-input]
    [:div {:class "header"}
-    [:h3 "core.async chat room"]]
-   [sidebar]])
+    [:h3 "this is a chat room"]]
+   ;;[sidebar]
+   ])
 
 (defn app-container
+  "The entire front-end application with all of the different views."
   []
   (case (:active-panel @app-state)
     :login [login-view]
@@ -127,4 +137,3 @@
 
 (reagent/render-component [app-container]
                           (. js/document (getElementById "app")))
-
