@@ -1,1 +1,1 @@
-web: java $JVM_OPTS -cp target/hablamos-standalone.jar clojure.main -m hablamos.main $PORT
+web: java $JVM_OPTS -cp target/smess-standalone.jar clojure.main -m smess.main $PORT

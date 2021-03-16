@@ -1,6 +1,6 @@
-(ns hablamos.main
+(ns smess.main
   (:require [org.httpkit.server :as hk]
-            [hablamos.handler :as h])
+            [smess.handler :as h])
   (:gen-class))
 
 (defn -main

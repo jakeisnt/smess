@@ -1,4 +1,4 @@
-(ns hablamos.handler
+(ns smess.handler
   (:require
    [org.httpkit.server :as hk]
    [chord.http-kit :refer [with-channel]]

@@ -1,4 +1,4 @@
-(defproject hablamos "0.1.0-SNAPSHOT"
+(defproject smess "0.1.0-SNAPSHOT"
   :description "FIXME: write this!"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
@@ -19,7 +19,7 @@
             [lein-ancient "0.6.15"]
             [lein-cljsbuild "1.1.7" :exclusions [[org.clojure/clojure]]]]
   :source-paths ["src/clj"]
-  :uberjar-name "hablamos-standalone.jar"
+  :uberjar-name "smess-standalone.jar"
   :resource-paths ["resources"]
   :figwheel {:server-port 3449 ;; default
              ;; :server-ip "127.0.0.1"
@@ -35,7 +35,7 @@
 
              ;; doesn't work for you just run your own server :) (see lein-ring)
 
-             :ring-handler hablamos.handler/app
+             :ring-handler smess.handler/app
 
              ;; To be able to open files in your editor from the heads up display
              ;; you will need to put a script on your path.
@@ -68,9 +68,9 @@
                    ;; need to add dev source path here to get user.clj loaded
                    :cljsbuild {:builds {:dev {:source-paths ["src/cljs"]
                                               :figwheel true
-                                              :compiler {:main hablamos.core
+                                              :compiler {:main smess.core
                                                          :asset-path "js/compiled/out"
-                                                         :output-to "resources/public/js/compiled/hablamos.js"
+                                                         :output-to "resources/public/js/compiled/smess.js"
                                                          :output-dir "resources/public/js/compiled/out"
                                                          :source-map-timestamp true}}}}
 
@@ -80,12 +80,12 @@
                                                      :target-path]}
              :uberjar {:prep-tasks ["compile" ["cljsbuild" "once" "min"]]
                        :aot :all
-                       :main hablamos.main
+                       :main smess.main
                        :cljsbuild {:builds {:min {:source-paths ["src/cljs"]
-                                                  :compiler {:output-to "resources/public/js/compiled/hablamos.js"
+                                                  :compiler {:output-to "resources/public/js/compiled/smess.js"
                                                              :asset-path "js/compiled/out"
                                                              :output-dir "resources/public/js/compiled/out"
-                                                             :main hablamos.core
+                                                             :main smess.core
                                                              :optimizations :advanced
                                                              :pretty-print false
-                                                             :closure-defines {hablamos.core/ws-url "wss://hablamos-chat.herokuapp.com/ws"}}}}}}})
+                                                             :closure-defines {smess.core/ws-url "wss://example.com/ws"}}}}}}})

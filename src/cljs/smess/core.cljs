@@ -1,4 +1,4 @@
-(ns hablamos.core
+(ns smess.core
   (:require [reagent.core :as reagent :refer [atom]]
             [chord.client :refer [ws-ch]]
             [cljs.core.async :as async :include-macros true]))
