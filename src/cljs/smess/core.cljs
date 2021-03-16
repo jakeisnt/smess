@@ -69,7 +69,7 @@
                                                     :m-type :chat}))
                       (reset! v nil))}
         [:div {:style {:display "flex"
-                       :flex-direction "column"}}
+                       :flex-direction "row"}}
          [:input {:type "text"
                   :value @v
                   :placeholder "Type a message to send to the chatroom"
@@ -101,12 +101,13 @@
                        (swap! app-state assoc :active-panel :chat)
                        (setup-websockets!))}
          [:input {:type "text"
+                  :class "username-input"
                   :value @v
                   :placeholder "Pick a username"
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:br]
          [:button {:type "submit"
-                   :class "button-primary"} "Start chatting"]]]])))
+                   :class "button-primary start-chatting-button"} "Start chatting"]]]])))
 
 ;; (defn sidebar
 ;;   "Shows all of the users currently in the channel."
@@ -124,7 +125,7 @@
    [chat-history]
    [chat-input]
    [:div {:class "header"}
-    [:h3 "this is a chat room"]]
+    [:h3 "Smess"]]
    ;;[sidebar]
    ])
 

@@ -7,7 +7,7 @@ body {
     display: grid;
     width: 100vw;
     height: 100vh;
-    grid-template-rows: 50px 0px 1fr  150px;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "header" "history" "text-input";
 }
@@ -25,7 +25,8 @@ body {
 
 .header {
     grid-area: header;
-    background-color: grey;
+    background-color: black;
+    text-align: center;
 }
 
 /* .sidebar { */
@@ -61,4 +62,8 @@ body {
     grid-area: login;
     align-self: center;
     justify-self: center;
+}
+
+.start-chatting-button {
+    width: 100%;
 }
