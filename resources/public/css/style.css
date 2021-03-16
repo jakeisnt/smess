@@ -9,7 +9,7 @@ body {
     height: 100vh;
     grid-template-rows: 50px 0px 1fr  150px;
     grid-template-columns: 1fr;
-    grid-template-areas: "header" "sidebar" "history" "text-input";
+    grid-template-areas: "header" "history" "text-input";
 }
 
 @media only screen and (min-width: 400px)  {
@@ -19,7 +19,7 @@ body {
         height: 100vh;
         grid-template-rows: 50px 1fr 150px;
         grid-template-columns: 200px 1fr;
-        grid-template-areas: "header header" "sidebar history" "text-input text-input";
+        grid-template-areas: "header header" "history history" "text-input text-input";
     }
 }
 
@@ -28,12 +28,12 @@ body {
     background-color: grey;
 }
 
-.sidebar {
-    grid-area: sidebar;
-    background-color: whitesmoke;
-    max-height: calc(100vh-200px);
-    overflow-y: scroll;
-}
+/* .sidebar { */
+/*     grid-area: sidebar; */
+/*     background-color: whitesmoke; */
+/*     max-height: calc(100vh-200px); */
+/*     overflow-y: scroll; */
+/* } */
 
 .history {
     grid-area: history;
