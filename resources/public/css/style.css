@@ -121,3 +121,21 @@ p {
     text-decoration: none;
     margin: 0;
 }
+
+.preview-button {
+    margin: 1.2em;
+    background-color: white;
+    padding: 0 1em;
+}
+
+.markdown-preview-box {
+    border: 2px solid black;
+    margin: 1em;
+    padding: 0 0.5em;
+    background-color: white;
+}
+
+.markdown-preview {
+    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+

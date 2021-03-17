@@ -70,12 +70,19 @@
           (receive-msgs ws-channel))))))
 
 ;; View
+(defn markdown-preview
+  "A window to preview chat input in markdown."
+  [m]
+  [:div {:class "markdown-preview"
+         :dangerouslySetInnerHTML {:__html (js/marked m)}}])
+
 (defn chat-input
   "Allow users to input text and submit it to send messages."
   []
   (let [v (atom nil)]
     (fn []
       [:div {:class "text-input"}
+       (if @v [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
        [:form
         {:on-submit (fn [x]
                       (.preventDefault x)
@@ -146,8 +153,8 @@
                         [:div {:class "usermsg"}
                          (username-box (:user usermsg))
                          (for [m (:messages usermsg)]
-                           ^{:key (:id m)} [:div {:key (:id m) :class "message"
-                                                  :dangerouslySetInnerHTML {:__html (js/marked (str (:msg m)))}}])]))])
+                           [:div {:key (:id m) :class "message"}
+                            (markdown-preview (:msg m))])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
