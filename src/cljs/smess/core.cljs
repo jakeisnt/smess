@@ -116,10 +116,6 @@
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
 
-(println "calling function")
-(println (group-chats @msg-list))
-(js/console.log (group-chats @msg-list))
-
 (defn chat-history []
   (reagent/create-class
    {:render (fn []
@@ -129,7 +125,7 @@
                  [:div {:class "usermsg"}
                   [:p {:class "username"} (str (:user usermsg))]
                   (for [m (:messages usermsg)]
-                    ^{:key (:id m)} [:div (str (:msg m))])])])
+                    ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
