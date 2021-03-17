@@ -158,7 +158,7 @@
   "Shows all of the users currently in the channel."
   []
   [:div {:class "sidebar"}
-   [:h5 "Active Users:"]
+   [:h5 "users"]
    (into [:ul]
          (for [[k v] @users]
            ^{:key k} [:li v]))])
