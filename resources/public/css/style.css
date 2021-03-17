@@ -69,7 +69,13 @@ body {
 }
 
 .username {
+    margin-bottom: 0em;
     font: monospace;
     color: red;
     text-decoration: underline;
+}
+
+.usermsg {
+    padding-bottom: 0;
+    padding-top: 1em;
 }

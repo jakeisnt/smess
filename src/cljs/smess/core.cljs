@@ -129,7 +129,7 @@
                  [:div {:class "usermsg"}
                   [:p {:class "username"} (str (:user usermsg))]
                   (for [m (:messages usermsg)]
-                    ^{:key (:id m)} [:p (str (:msg m))])])])
+                    ^{:key (:id m)} [:div (str (:msg m))])])])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
