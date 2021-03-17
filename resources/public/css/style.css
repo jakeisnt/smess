@@ -20,6 +20,9 @@ body {
         height: 100vh;
         grid-template-areas: "header header" "history sidebar" "text-input text-input";
     }
+    .sidebar {
+        display: grid;
+    }
 }
 
 .header {
@@ -35,6 +38,7 @@ body {
     padding: 2em;
     border-style: double;
     overflow-y: scroll;
+    display: none;
 }
 
 .history {
