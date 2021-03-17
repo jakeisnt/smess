@@ -34,16 +34,12 @@
   (println "sending a notification..")
   (if (not= (.-permission (.-Notification js/window)) "granted")
     (.requestPermission (.-Notification js/window)))
-  (println msg)
   ;; only send the notification if it was not sent by the current user
   (if (not= (:user msg) (:user @app-state))
-    (let
-     [notification (js/Notification.
-                    (str "Smess (New message from " (:user msg) ")")
-                    (clj->js {:icon "https://google.com" :body (:msg msg)}))]
-
-      ;; (set! (.-onclick notification) (fn [] (.open js/window BASEURL)))
-      )))
+    (js/Notification.
+     (str "Smess: New message from " (:user msg))
+     (clj->js {;; :icon "https://google.com" Add icon later once i have one
+               :body (:msg msg)}))))
 
 (defn receive-msgs
   "Receive messages from the websocket."
@@ -134,7 +130,9 @@
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
 
-(defn username-box [username]
+(defn username-box
+  "An interactive box containing the username."
+  [username]
   [:p {:class (str "username" (if (= (:user @app-state) username) " my-username" ""))}
    (if (= (:user @app-state) username)
      (str "me [ " username " ]")
