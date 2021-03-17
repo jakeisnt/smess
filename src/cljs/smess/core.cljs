@@ -88,7 +88,7 @@
          [:input {:type "text"
                   :value @v
                   :class "message-input"
-                  :placeholder "Type a message to send to the chatroom"
+                  :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
                    :class "message-button"} "Send"]]]])))

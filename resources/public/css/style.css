@@ -116,3 +116,8 @@ body {
     line-height: 38px;
     border-radius: 4px;
 }
+
+p {
+    text-decoration: none;
+    margin: 0;
+}
