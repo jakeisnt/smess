@@ -114,6 +114,12 @@
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
 
+(defn username-box [username]
+  [:p {:class (str "username" (if (= (:user @app-state) username) " my-username" ""))}
+   (if (= (:user @app-state) username)
+     (str "me [ " username " ]")
+     username)])
+
 (defn chat-history []
   (reagent/create-class
    {:render (fn []
@@ -121,10 +127,7 @@
                (for [usermsg (group-chats @msg-list)]
                  ^{:key (:user usermsg)}
                  [:div {:class "usermsg"}
-                  [:p {:class (str "username" (if (= (:user @app-state) (:user usermsg)) " my-username" ""))}
-                   (if (= (:user @app-state) (:user usermsg))
-                     (str "me [ " (:user usermsg) " ]")
-                     (:user usermsg))]
+                  (username-box (:user usermsg))
                   (for [m (:messages usermsg)]
                     ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
 
@@ -161,7 +164,7 @@
    [:h5 "users"]
    (into [:ul]
          (for [[k v] @users]
-           ^{:key k} [:li v]))])
+           ^{:key k} (username-box v)))])
 
 (defn chat-view
   "Displays all of the chat history."
