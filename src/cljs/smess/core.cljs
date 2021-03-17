@@ -3,6 +3,7 @@
             [chord.client :refer [ws-ch]]
             [cljs.core.async :as async :include-macros true]))
 
+(def BASEURL "http://localhost:3449")
 (goog-define ws-url "ws://localhost:3449/ws")
 
 (defonce app-state (atom {:text "Hello world!"
@@ -27,6 +28,18 @@
       (async/>! svr-chan msg)
       (recur))))
 
+(defn notify
+  "Send a notification with the provided message to the current user."
+  [msg]
+  (if (not= (.-permission (.-Notification js/window)) "granted")
+    (.requestPermission (.-Notification js/window)))
+  ;; only send the notification if it was not sent by the current user
+  (if (not= (:user msg) (:user @app-state))
+    (js/Notification.
+     (str "Smess: New message from " (:user msg))
+     (clj->js {;; :icon "https://google.com" Add icon later once i have one
+               :body (:msg msg)}))))
+
 (defn receive-msgs
   "Receive messages from the websocket."
   [svr-chan]
@@ -35,7 +48,9 @@
       (do
         (case (:m-type new-msg)
           :init-users (reset! users (:msg new-msg))
-          :chat (swap! msg-list conj (dissoc new-msg :m-type))
+          :chat (do
+                  (swap! msg-list conj (dissoc new-msg :m-type))
+                  (notify new-msg))
           :new-user (swap! users merge (:msg new-msg))
           :user-left (swap! users dissoc (:msg new-msg)))
         (recur))
@@ -114,7 +129,9 @@
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
 
-(defn username-box [username]
+(defn username-box
+  "An interactive box containing the username."
+  [username]
   [:p {:class (str "username" (if (= (:user @app-state) username) " my-username" ""))}
    (if (= (:user @app-state) username)
      (str "me [ " username " ]")
@@ -124,16 +141,24 @@
   (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
-               (for [usermsg (group-chats @msg-list)]
-                 ^{:key (:user usermsg)}
-                 [:div {:class "usermsg"}
-                  (username-box (:user usermsg))
-                  (for [m (:messages usermsg)]
-                    ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
+               (doall (for [usermsg (group-chats @msg-list)]
+                        ^{:key (:user usermsg)}
+                        [:div {:class "usermsg"}
+                         (username-box (:user usermsg))
+                         (for [m (:messages usermsg)]
+                           ^{:key (:id m)} [:div {:key (:id m) :class "message"} (str (:msg m))])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
                               (set! (.-scrollTop node) (.-scrollHeight node))))}))
+
+(defn enable-notifications
+  "Enable notifications for this browser."
+  []
+  (if (.-Notification js/window)
+    (if (not= (.-permission (.-Notification js/window)) "granted")
+      (.requestPermission js/Notification))
+    (.warn js/console "This browser may not have notification capabilities.")))
 
 (defn login-view
   "Allows users to pick a username and enter the chat."
@@ -155,6 +180,7 @@
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:br]
          [:button {:type "submit"
+                   :onClick enable-notifications
                    :class "button-primary start-chatting-button"} "Start chatting"]]]])))
 
 (defn sidebar
