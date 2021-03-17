@@ -1,6 +1,7 @@
 (ns smess.core
   (:require [reagent.core :as reagent :refer [atom]]
             [chord.client :refer [ws-ch]]
+            [markdown.core :refer [md->html]]
             [cljs.core.async :as async :include-macros true]))
 
 (def BASEURL "http://localhost:3449")
@@ -74,7 +75,7 @@
   "A window to preview chat input in markdown."
   [m]
   [:div {:class "markdown-preview"
-         :dangerouslySetInnerHTML {:__html (js/marked m)}}])
+         :dangerouslySetInnerHTML {:__html (md->html m)}}])
 
 (defn chat-input
   "Allow users to input text and submit it to send messages."
