@@ -176,7 +176,7 @@
                                 (swap! app-state assoc :user @v)
                                 (swap! app-state assoc :active-panel :chat)
                                 (setup-websockets!))
-                           (reset! notif-error "Please provide a valid username.")))}
+                           (reset! notif-error "Use a non-empty username.")))}
          [:input {:type "text"
                   :class "username-input"
                   :value @v
@@ -186,7 +186,7 @@
          [:button {:type "submit"
                    :onClick enable-notifications
                    :class "button-primary start-chatting-button"} "Start chatting"]
-         [:div @notif-error]]]])))
+         (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]]])))
 
 (defn sidebar
   "Shows all of the users currently in the channel."
