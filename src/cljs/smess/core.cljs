@@ -31,7 +31,6 @@
 (defn notify
   "Send a notification with the provided message to the current user."
   [msg]
-  (println "sending a notification..")
   (if (not= (.-permission (.-Notification js/window)) "granted")
     (.requestPermission (.-Notification js/window)))
   ;; only send the notification if it was not sent by the current user
@@ -49,9 +48,9 @@
       (do
         (case (:m-type new-msg)
           :init-users (reset! users (:msg new-msg))
-          :chat ((fn []
-                   (swap! msg-list conj (dissoc new-msg :m-type))
-                   (notify new-msg)))
+          :chat (do
+                  (swap! msg-list conj (dissoc new-msg :m-type))
+                  (notify new-msg))
           :new-user (swap! users merge (:msg new-msg))
           :user-left (swap! users dissoc (:msg new-msg)))
         (recur))
@@ -156,10 +155,10 @@
 (defn enable-notifications
   "Enable notifications for this browser."
   []
-  (if (and (.-Notification js/window)
-           (not= (.-permission (.-Notification js/window)) "granted"))
-    (.requestPermission js/Notification)
-    (println "This browser may not have notification capabilities.")))
+  (if (.-Notification js/window)
+    (if (not= (.-permission (.-Notification js/window)) "granted")
+      (.requestPermission js/Notification))
+    (.warn js/console "This browser may not have notification capabilities.")))
 
 (defn login-view
   "Allows users to pick a username and enter the chat."
