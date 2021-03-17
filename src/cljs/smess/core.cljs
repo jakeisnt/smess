@@ -28,6 +28,23 @@
       (async/>! svr-chan msg)
       (recur))))
 
+(defn notify
+  "Send a notification with the provided message to the current user."
+  [msg]
+  (println "sending a notification..")
+  (if (not= (.-permission (.-Notification js/window)) "granted")
+    (.requestPermission (.-Notification js/window)))
+  (println msg)
+  ;; only send the notification if it was not sent by the current user
+  (if (not= (:user msg) (:user @app-state))
+    (let
+     [notification (js/Notification.
+                    (str "Smess (New message from " (:user msg) ")")
+                    (clj->js {:icon "https://google.com" :body (:msg msg)}))]
+
+      ;; (set! (.-onclick notification) (fn [] (.open js/window BASEURL)))
+      )))
+
 (defn receive-msgs
   "Receive messages from the websocket."
   [svr-chan]
@@ -36,7 +53,9 @@
       (do
         (case (:m-type new-msg)
           :init-users (reset! users (:msg new-msg))
-          :chat (swap! msg-list conj (dissoc new-msg :m-type))
+          :chat ((fn []
+                   (swap! msg-list conj (dissoc new-msg :m-type))
+                   (notify new-msg)))
           :new-user (swap! users merge (:msg new-msg))
           :user-left (swap! users dissoc (:msg new-msg)))
         (recur))
@@ -130,7 +149,7 @@
                         [:div {:class "usermsg"}
                          (username-box (:user usermsg))
                          (for [m (:messages usermsg)]
-                           ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])]))])
+                           ^{:key (:id m)} [:div {:key (:id m) :class "message"} (str (:msg m))])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
@@ -185,17 +204,6 @@
    [:div {:class "header"}
     [:h3 "smess"]]
    [sidebar]])
-
-(defn notify
-  "Send a notification with the provided message to the current user."
-  [msg]
-  (if (not= (.-permission (.-Notification js/window)) "granted")
-    (.requestPermission (.-Notification js/window)))
-  (let
-   [notification (js/Notification
-                  "Smess (New Message)"
-                  {:icon "https://google.com" :body msg})]
-    (set! (.-onclick notification) (fn [] (.open js/window BASEURL)))))
 
 (defn app-container
   "The entire front-end application with all of the different views."
