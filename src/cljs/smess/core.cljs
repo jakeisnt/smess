@@ -3,6 +3,7 @@
             [chord.client :refer [ws-ch]]
             [cljs.core.async :as async :include-macros true]))
 
+(def BASEURL "http://localhost:3449")
 (goog-define ws-url "ws://localhost:3449/ws")
 
 (defonce app-state (atom {:text "Hello world!"
@@ -124,16 +125,24 @@
   (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
-               (for [usermsg (group-chats @msg-list)]
-                 ^{:key (:user usermsg)}
-                 [:div {:class "usermsg"}
-                  (username-box (:user usermsg))
-                  (for [m (:messages usermsg)]
-                    ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
+               (doall (for [usermsg (group-chats @msg-list)]
+                        ^{:key (:user usermsg)}
+                        [:div {:class "usermsg"}
+                         (username-box (:user usermsg))
+                         (for [m (:messages usermsg)]
+                           ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
                               (set! (.-scrollTop node) (.-scrollHeight node))))}))
+
+(defn enable-notifications
+  "Enable notifications for this browser."
+  []
+  (if (and (.-Notification js/window)
+           (not= (.-permission (.-Notification js/window)) "granted"))
+    (.requestPermission js/Notification)
+    (println "This browser may not have notification capabilities.")))
 
 (defn login-view
   "Allows users to pick a username and enter the chat."
@@ -155,6 +164,7 @@
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:br]
          [:button {:type "submit"
+                   :onClick enable-notifications
                    :class "button-primary start-chatting-button"} "Start chatting"]]]])))
 
 (defn sidebar
@@ -175,6 +185,17 @@
    [:div {:class "header"}
     [:h3 "smess"]]
    [sidebar]])
+
+(defn notify
+  "Send a notification with the provided message to the current user."
+  [msg]
+  (if (not= (.-permission (.-Notification js/window)) "granted")
+    (.requestPermission (.-Notification js/window)))
+  (let
+   [notification (js/Notification
+                  "Smess (New Message)"
+                  {:icon "https://google.com" :body msg})]
+    (set! (.-onclick notification) (fn [] (.open js/window BASEURL)))))
 
 (defn app-container
   "The entire front-end application with all of the different views."
