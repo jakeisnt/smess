@@ -163,16 +163,20 @@
 (defn login-view
   "Allows users to pick a username and enter the chat."
   []
-  (let [v (atom nil)]
+  (let [v (atom nil)
+        notif-error (atom nil)]
     (fn []
       [:div {:class "login-container"}
        [:div {:class "login"}
         [:form
          {:on-submit (fn [x]
                        (.preventDefault x)
-                       (swap! app-state assoc :user @v)
-                       (swap! app-state assoc :active-panel :chat)
-                       (setup-websockets!))}
+                       ;; if the user exists, they can enter the application.
+                       (if @v (do
+                                (swap! app-state assoc :user @v)
+                                (swap! app-state assoc :active-panel :chat)
+                                (setup-websockets!))
+                           (reset! notif-error "Use a non-empty username.")))}
          [:input {:type "text"
                   :class "username-input"
                   :value @v
@@ -181,7 +185,8 @@
          [:br]
          [:button {:type "submit"
                    :onClick enable-notifications
-                   :class "button-primary start-chatting-button"} "Start chatting"]]]])))
+                   :class "button-primary start-chatting-button"} "Start chatting"]
+         (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]]])))
 
 (defn sidebar
   "Shows all of the users currently in the channel."
