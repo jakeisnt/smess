@@ -146,7 +146,8 @@
                         [:div {:class "usermsg"}
                          (username-box (:user usermsg))
                          (for [m (:messages usermsg)]
-                           ^{:key (:id m)} [:div {:key (:id m) :class "message"} (str (:msg m))])]))])
+                           ^{:key (:id m)} [:div {:key (:id m) :class "message"
+                                                  :dangerouslySetInnerHTML {:__html (js/marked (str (:msg m)))}}])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
