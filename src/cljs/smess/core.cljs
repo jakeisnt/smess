@@ -1,6 +1,7 @@
 (ns smess.core
   (:require [reagent.core :as reagent :refer [atom]]
             [chord.client :refer [ws-ch]]
+            [markdown.core :refer [md->html]]
             [cljs.core.async :as async :include-macros true]))
 
 (def BASEURL "http://localhost:3449")
@@ -70,12 +71,19 @@
           (receive-msgs ws-channel))))))
 
 ;; View
+(defn markdown-preview
+  "A window to preview chat input in markdown."
+  [m]
+  [:div {:class "markdown-preview"
+         :dangerouslySetInnerHTML {:__html (md->html m)}}])
+
 (defn chat-input
   "Allow users to input text and submit it to send messages."
   []
   (let [v (atom nil)]
     (fn []
       [:div {:class "text-input"}
+       (if @v [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
        [:form
         {:on-submit (fn [x]
                       (.preventDefault x)
@@ -88,7 +96,7 @@
          [:input {:type "text"
                   :value @v
                   :class "message-input"
-                  :placeholder "Type a message to send to the chatroom"
+                  :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
                    :class "message-button"} "Send"]]]])))
@@ -146,7 +154,8 @@
                         [:div {:class "usermsg"}
                          (username-box (:user usermsg))
                          (for [m (:messages usermsg)]
-                           ^{:key (:id m)} [:div {:key (:id m) :class "message"} (str (:msg m))])]))])
+                           [:div {:key (:id m) :class "message"}
+                            (markdown-preview (:msg m))])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]

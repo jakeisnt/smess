@@ -11,6 +11,7 @@
                  [org.clojure/core.async  "0.4.490"]
                  [compojure "1.6.1"]
                  [jarohen/chord "0.8.1"]
+                 [markdown-clj "1.10.5"]
                  [reagent "0.8.1"]
                  [medley "1.1.0"]
                  [http-kit "2.4.0-alpha2"]]
