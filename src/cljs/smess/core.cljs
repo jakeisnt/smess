@@ -170,9 +170,11 @@
         [:form
          {:on-submit (fn [x]
                        (.preventDefault x)
-                       (swap! app-state assoc :user @v)
-                       (swap! app-state assoc :active-panel :chat)
-                       (setup-websockets!))}
+                       ;; if the user exists, they can enter the application.
+                       (if @v (do
+                                (swap! app-state assoc :user @v)
+                                (swap! app-state assoc :active-panel :chat)
+                                (setup-websockets!))))}
          [:input {:type "text"
                   :class "username-input"
                   :value @v
