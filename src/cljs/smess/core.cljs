@@ -99,8 +99,6 @@
                                          (let
                                           [cur-list-user (:user (first last-list))
                                            cur-list-msgs (:messages (first last-list))]
-                                           (println msg)
-                                           (println cur-list-msgs)
                                            {:user cur-list-user
                                             :list (cons
                                                    {:user cur-list-user
@@ -112,7 +110,6 @@
                                                         :list (cons
                                                                {:user (:user msg) :messages (list msg)}
                                                                last-list)}]
-                                           (println ret-obj)
                                            ret-obj))))
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
@@ -124,7 +121,10 @@
                (for [usermsg (group-chats @msg-list)]
                  ^{:key (:user usermsg)}
                  [:div {:class "usermsg"}
-                  [:p {:class "username"} (str (:user usermsg))]
+                  [:p {:class (str "username" (if (= (:user @app-state) (:user usermsg)) " my-username" ""))}
+                   (if (= (:user @app-state) (:user usermsg))
+                     (str "me [ " (:user usermsg) " ]")
+                     (:user usermsg))]
                   (for [m (:messages usermsg)]
                     ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
 
