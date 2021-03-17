@@ -69,20 +69,65 @@
                                                     :m-type :chat}))
                       (reset! v nil))}
         [:div {:style {:display "flex"
-                       :flex-direction "column"}}
+                       :flex-direction "row"}}
          [:input {:type "text"
                   :value @v
+                  :class "message-input"
                   :placeholder "Type a message to send to the chatroom"
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
-                   :class "button-primary"} "Send"]]]])))
+                   :class "message-button"} "Send"]]]])))
+
+(defn flip-group-chat-results [msglists]
+  (reverse (map (fn [elem] {:user (:user elem)
+                            :messages (reverse (:messages elem))}) msglists)))
+
+;; input: (list {:msg, :user, :id})
+;; return format:
+;; list of
+;; {:user: current user sending messages
+;;  :messages: ({:user, :msg, :id})}
+(defn group-chats [message-list]
+  (flip-group-chat-results (:list (reduce
+                                   (fn [last msg]
+                                     (let
+                                      [last-user (:user last)
+                                       last-list (:list last)]
+                                       (if (= (:user msg) last-user)
+                       ;; if the current user is the same as the last:
+                       ;; cons the current message onto the users data structure
+                                         (let
+                                          [cur-list-user (:user (first last-list))
+                                           cur-list-msgs (:messages (first last-list))]
+                                           (println msg)
+                                           (println cur-list-msgs)
+                                           {:user cur-list-user
+                                            :list (cons
+                                                   {:user cur-list-user
+                                                    :messages (cons msg cur-list-msgs)}
+                                                   (rest last-list))})
+                       ;; otherwise, create a new data structure with the user and the message,
+                       ;; carrying the last user's information with it
+                                         (let [ret-obj {:user (:user msg)
+                                                        :list (cons
+                                                               {:user (:user msg) :messages (list msg)}
+                                                               last-list)}]
+                                           (println ret-obj)
+                                           ret-obj))))
+                 ;; start with an empty user and list
+                                   {:user "" :list '()} message-list))))
 
 (defn chat-history []
   (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
-               (for [m @msg-list]
-                 ^{:key (:id m)} [:p (str (:user m) ": " (:msg m))])])
+               (for [usermsg (group-chats @msg-list)]
+                 ^{:key (:user usermsg)}
+                 [:div {:class "usermsg"}
+                  [:p {:class "username"} (str (:user usermsg))]
+                  (for [m (:messages usermsg)]
+                    ^{:key (:id m)} [:div {:class "message"} (str (:msg m))])])])
+
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
                               (set! (.-scrollTop node) (.-scrollHeight node))))}))
@@ -101,21 +146,22 @@
                        (swap! app-state assoc :active-panel :chat)
                        (setup-websockets!))}
          [:input {:type "text"
+                  :class "username-input"
                   :value @v
                   :placeholder "Pick a username"
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:br]
          [:button {:type "submit"
-                   :class "button-primary"} "Start chatting"]]]])))
+                   :class "button-primary start-chatting-button"} "Start chatting"]]]])))
 
-;; (defn sidebar
-;;   "Shows all of the users currently in the channel."
-;;   []
-;;   [:div {:class "sidebar"}
-;;    [:h5 "Active Users:"]
-;;    (into [:ul]
-;;          (for [[k v] @users]
-;;            ^{:key k} [:li v]))])
+(defn sidebar
+  "Shows all of the users currently in the channel."
+  []
+  [:div {:class "sidebar"}
+   [:h5 "users"]
+   (into [:ul]
+         (for [[k v] @users]
+           ^{:key k} [:li v]))])
 
 (defn chat-view
   "Displays all of the chat history."
@@ -124,9 +170,8 @@
    [chat-history]
    [chat-input]
    [:div {:class "header"}
-    [:h3 "this is a chat room"]]
-   ;;[sidebar]
-   ])
+    [:h3 "smess"]]
+   [sidebar]])
 
 (defn app-container
   "The entire front-end application with all of the different views."

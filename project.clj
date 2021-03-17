@@ -63,6 +63,8 @@
   ;; Setting up nREPL for Figwheel and ClojureScript dev
   ;; Please see:
   ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl
+
+
   :profiles {:dev {:dependencies [[figwheel-sidecar "0.5.18" :exclusions [[http-kit]]]
                                   [cider/piggieback "0.3.10"]]
                    ;; need to add dev source path here to get user.clj loaded
@@ -88,4 +90,4 @@
                                                              :main smess.core
                                                              :optimizations :advanced
                                                              :pretty-print false
-                                                             :closure-defines {smess.core/ws-url "wss://example.com/ws"}}}}}}})
+                                                             :closure-defines {smess.core/ws-url "wss://clojure-smess.herokuapp.com/ws"}}}}}}})

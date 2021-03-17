@@ -1,13 +1,14 @@
+@import url("https://jakeisnt.github.io/styles/main.css");
 body {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 .chat-container {
     display: grid;
     width: 100vw;
     height: 100vh;
-    grid-template-rows: 50px 0px 1fr  150px;
+    grid-template-rows: 1fr;
     grid-template-columns: 1fr;
     grid-template-areas: "header" "history" "text-input";
 }
@@ -17,25 +18,27 @@ body {
         display: grid;
         width: 100vw;
         height: 100vh;
-        grid-template-rows: 50px 1fr 150px;
-        grid-template-columns: 200px 1fr;
-        grid-template-areas: "header header" "history history" "text-input text-input";
+        grid-template-areas: "header header" "history sidebar" "text-input text-input";
     }
 }
 
 .header {
     grid-area: header;
-    background-color: grey;
+    max-height: 4vh;
+    background-color: aquamarine;
+    text-align: center;
 }
 
-/* .sidebar { */
-/*     grid-area: sidebar; */
-/*     background-color: whitesmoke; */
-/*     max-height: calc(100vh-200px); */
-/*     overflow-y: scroll; */
-/* } */
+.sidebar {
+    grid-area: sidebar;
+    background-color: white;
+    padding: 2em;
+    border-style: double;
+    overflow-y: scroll;
+}
 
 .history {
+    padding: 2em;
     grid-area: history;
     background-color: white;
     max-height: calc(100vh-200px);
@@ -61,4 +64,36 @@ body {
     grid-area: login;
     align-self: center;
     justify-self: center;
+}
+
+.start-chatting-button {
+    width: 100%;
+}
+
+.username {
+    margin-bottom: 0em;
+    font: monospace;
+    color: red;
+    text-decoration: underline;
+}
+
+.usermsg {
+    padding-bottom: 0;
+    padding-top: 1em;
+}
+
+.message {
+    padding-left: 0.5em;
+}
+
+.message-input {
+    width: 100%;
+    color: black;
+    margin: 1em;
+}
+
+.message-button {
+    height: 100%;
+    margin: 1.2em;
+    background-color: white;
 }
