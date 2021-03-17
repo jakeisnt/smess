@@ -72,10 +72,11 @@
                        :flex-direction "row"}}
          [:input {:type "text"
                   :value @v
+                  :class "message-input"
                   :placeholder "Type a message to send to the chatroom"
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
-                   :class "button-primary"} "Send"]]]])))
+                   :class "message-button"} "Send"]]]])))
 
 (defn flip-group-chat-results [msglists]
   (reverse (map (fn [elem] {:user (:user elem)
@@ -153,14 +154,14 @@
          [:button {:type "submit"
                    :class "button-primary start-chatting-button"} "Start chatting"]]]])))
 
-;; (defn sidebar
-;;   "Shows all of the users currently in the channel."
-;;   []
-;;   [:div {:class "sidebar"}
-;;    [:h5 "Active Users:"]
-;;    (into [:ul]
-;;          (for [[k v] @users]
-;;            ^{:key k} [:li v]))])
+(defn sidebar
+  "Shows all of the users currently in the channel."
+  []
+  [:div {:class "sidebar"}
+   [:h5 "Active Users:"]
+   (into [:ul]
+         (for [[k v] @users]
+           ^{:key k} [:li v]))])
 
 (defn chat-view
   "Displays all of the chat history."
@@ -169,9 +170,8 @@
    [chat-history]
    [chat-input]
    [:div {:class "header"}
-    [:h3 "Smess"]]
-   ;;[sidebar]
-   ])
+    [:h3 "smess"]]
+   [sidebar]])
 
 (defn app-container
   "The entire front-end application with all of the different views."
