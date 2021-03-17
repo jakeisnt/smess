@@ -77,12 +77,58 @@
          [:button {:type "submit"
                    :class "button-primary"} "Send"]]]])))
 
+;; input: (list {:msg, :user, :id})
+;; return format:
+;; list of
+;; {:user: current user sending messages
+;;  :messages: list of messages with ids}
+(defn group-chats [message-list]
+  (:list (reduce (fn [last msg]
+                   (let
+                    [last-user (:user last)
+                     last-list (:list last)]
+                     (if (= (:user msg) last-user)
+                       ;; if the current user is the same as the last:
+                       ;; cons the current message onto the users data structure
+                       (let
+                        [cur-list-user (:user (first last-list))
+                         cur-list-msgs (:messages (first last-list))]
+                         (println msg)
+                         (println cur-list-msgs)
+                         {:user cur-list-user
+                          :list (cons
+                                 {:user cur-list-user
+                                  :messages (cons msg cur-list-msgs)}
+                                 (rest last-list))})
+                       ;; otherwise, create a new data structure with the user and the message,
+                       ;; carrying the last user's information with it
+                       (let [ret-obj {:user (:user msg)
+                                      :list (cons
+                                             {:user (:user msg) :messages (list msg)}
+                                             last-list)}]
+                         (println ret-obj)
+                         ret-obj))))
+                 ;; start with an empty user and list
+                 {:user "" :list '()} message-list)))
+
+(println "calling function")
+(println (group-chats @msg-list))
+(js/console.log (group-chats @msg-list))
+
 (defn chat-history []
   (reagent/create-class
    {:render (fn []
+              (js/console.log (group-chats @msg-list))
+              (println (group-chats @msg-list))
               [:div {:class "history"}
-               (for [m @msg-list]
-                 ^{:key (:id m)} [:p (str (:user m) ": " (:msg m))])])
+               (str (group-chats @msg-list))
+               ;; (for [usermsg (group-chats @msg-list)]
+               ;;   ^{:key (:user usermsg)}
+               ;;   [:div {:class "usermsg"}
+               ;;    [:p (str (:user usermsg))]
+               ;;    (for [m (:messages usermsg)]
+               ;;      ^{:key (:id m)} [:p (str (:msg m))])])
+               ])
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
                               (set! (.-scrollTop node) (.-scrollHeight node))))}))
