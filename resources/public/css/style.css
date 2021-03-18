@@ -4,6 +4,38 @@ body {
   padding: 0;
 }
 
+/* login flow */
+.login-container {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; 
+    grid-template-areas: ". . ." ". login ." ". . .";
+}
+
+.login {
+    grid-area: login;
+    align-self: center;
+    justify-self: center;
+}
+
+.start-chatting-button {
+    width: 100%;
+}
+
+.error-tip {
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #bbb;
+    background-color: #fe500f;
+    color: #fff;
+    font-weight: 600;
+    line-height: 38px;
+    border-radius: 4px;
+}
+
+/* chat flow */
 .chat-container {
     display: grid;
     width: 100vw;
@@ -52,25 +84,6 @@ body {
     width: 100%;
 }
 
-.login-container {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-areas: ". . ." ". login ." ". . .";
-}
-
-.login {
-    grid-area: login;
-    align-self: center;
-    justify-self: center;
-}
-
-.start-chatting-button {
-    width: 100%;
-}
-
 .username {
     color: red;
     text-decoration: underline;
@@ -94,26 +107,11 @@ body {
 .message-input {
     width: 100%;
     color: black;
+    border: 2px solid black;
     margin: 1em;
-}
-
-.message-button {
-    height: 100%;
-    margin: 1.2em;
+    padding: 1em 1em;
     background-color: white;
 }
-
-.error-tip {
-    text-align: center;
-    text-decoration: none;
-    border: 1px solid #bbb;
-    background-color: #fe500f;
-    color: #fff;
-    font-weight: 600;
-    line-height: 38px;
-    border-radius: 4px;
-}
-
 
 .preview-button {
     margin: 1.2em;
@@ -124,9 +122,19 @@ body {
 .markdown-preview-box {
     border: 2px solid black;
     margin: 1em;
-    padding: 0 0.5em;
+    padding: 0 1em;
     background-color: white;
 }
+
+.send-message-button {
+    border: 2px outset black;
+    height: 100%;
+    padding: 1em;
+    margin: 1em 1em;
+    color: black;
+    background-color: white;
+}
+
 
 /* html element styles */
 img {

@@ -100,7 +100,7 @@
                   :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
-                   :class "message-button"} "Send"]]]])))
+                   :class "send-message-button"} "Send"]]]])))
 
 (defn flip-group-chat-results [msglists]
   (reverse (map (fn [elem] {:user (:user elem)
