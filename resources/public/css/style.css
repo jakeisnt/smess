@@ -9,30 +9,39 @@ body {
     display: grid;
     width: 100vw;
     height: 100vh;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 0.75fr 1fr 1fr;
     grid-template-columns: 1fr 1fr 1fr; 
-    grid-template-areas: ". . ." ". login ." ". . .";
+    grid-template-areas: ". error-tip-container ." ". login ." ". . .";
 }
 
 .login {
     grid-area: login;
+    display: flex;
+    flex-direction: column;
     align-self: center;
     justify-self: center;
+    flex-flow: center;
+    align-items: center;
+}
+
+.username-input {
+    margin:  1.25em 0;
+    text-align: center;
 }
 
 .start-chatting-button {
-    width: 100%;
+    margin: 0;
+}
+.error-tip-container {
+    grid-area: error-tip-container;
 }
 
 .error-tip {
+    border: 2px solid red;
+    padding: 0.5em 1em;
     text-align: center;
-    text-decoration: none;
-    border: 1px solid #bbb;
-    background-color: #fe500f;
-    color: #fff;
-    font-weight: 600;
-    line-height: 38px;
-    border-radius: 4px;
+    margin: 1em;
+    align: center;
 }
 
 /* chat flow */
@@ -143,4 +152,18 @@ img {
 
 p {
     text-decoration: none;
+}
+
+input {
+    color: black;
+    border: 2px solid black;
+    padding: 1em;
+    background-color: white;
+}
+
+button {
+    border: 2px outset black;
+    padding: 1em;
+    color: black;
+    background-color: white;
 }

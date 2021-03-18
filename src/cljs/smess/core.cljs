@@ -181,6 +181,18 @@
       (.requestPermission js/Notification))
     (.warn js/console "This browser may not have notification capabilities.")))
 
+(defn ormap
+  "Returns true if any of the values are true."
+  [pred ls] (reduce (fn [acc i] (or acc (pred i))) nil ls))
+
+(defn get-invalid-username-error
+  "Gets the error associated with an invalid username if there is one."
+  [val]
+  (cond
+    (= val "") "Use a non-empty username."
+    (ormap (partial = " ") (.split val "")) "The username should not include spaces."
+    :else nil))
+
 (defn login-view
   "Allows users to pick a username and enter the chat."
   []
@@ -188,26 +200,28 @@
         notif-error (atom nil)]
     (fn []
       [:div {:class "login-container"}
-       [:div {:class "login"}
-        [:form
-         {:on-submit (fn [x]
-                       (.preventDefault x)
+       [:form
+        {:class "login"
+         :on-submit (fn [x]
+                      (.preventDefault x)
                        ;; if the user exists, they can enter the application.
-                       (if @v (do
-                                (swap! app-state assoc :user @v)
-                                (swap! app-state assoc :active-panel :chat)
-                                (setup-websockets!))
-                           (reset! notif-error "Use a non-empty username.")))}
-         [:input {:type "text"
-                  :class "username-input"
-                  :value @v
-                  :placeholder "Pick a username"
-                  :on-change #(reset! v (-> % .-target .-value))}]
-         [:br]
-         [:button {:type "submit"
-                   :onClick enable-notifications
-                   :class "button-primary start-chatting-button"} "Start chatting"]
-         (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]]])))
+                      (if (and @v (not (get-invalid-username-error @v)))
+                        (do
+                          (swap! app-state assoc :user @v)
+                          (swap! app-state assoc :active-panel :chat)
+                          (setup-websockets!))))}
+        [:input {:type "text"
+                 :class "username-input"
+                 :value @v
+                 :placeholder "Pick a username"
+                 :on-change #(let
+                              [val (-> % .-target .-value)]
+                               (reset! v val)
+                               (reset! notif-error (get-invalid-username-error val)))}]
+        [:button {:type "submit"
+                  :onClick enable-notifications
+                  :class "button-primary start-chatting-button"} "Start chatting"]]
+       [:div {:class "error-tip-container"} (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]])))
 
 (defn sidebar
   "Shows all of the users currently in the channel."
