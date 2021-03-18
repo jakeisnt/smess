@@ -162,8 +162,80 @@ input {
 }
 
 button {
-    border: 2px outset black;
+    border: 2px solid black;
     padding: 1em;
     color: black;
     background-color: white;
+
+/* the rest of this is borrowed from https://github.com/thesephist/blocks.css/blob/master/src/blocks.css for now and slightly modified. */
+    display: block;
+    padding: 4px 8px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    position: relative;
+    top: -2px;
+    left: -2px;
+    transition: transform 0.2s;
+    margin: 8px 6px 10px 6px;
+    z-index: 1;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+/* INTERACTIVE BLOCK STYLES */
+button::before {
+  content: "";
+  background: white;
+  border: 2px solid black;
+  box-sizing: border-box;
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  height: calc(100% + 6px);
+  width: calc(100% + 6px);
+  z-index: -1;
+}
+
+button:hover,
+button:focus {
+  transform: scale(0.9);
+}
+
+button::after {
+  content: "";
+  display: block;
+  box-sizing: border-box;
+  background: black;
+  border: 3px solid black;
+  height: calc(100% + 3px);
+  width: calc(100%);
+  position: absolute;
+  top: 3px;
+  right: 0;
+  z-index: -2;
+  transition: transform 0.2s;
+}
+
+button:hover::after,
+button:focus::after {
+  transform: translate(0, -3px);
+}
+
+button:active {
+  color: black;
+  transform: translate(0, 3px);
+}
+
+button:active::after {
+  transform: translate(0, -4px);
+}
+
+button:focus {
+  outline: none;
+}
+
+button.fixed {
+  cursor: initial;
 }

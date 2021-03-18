@@ -189,7 +189,7 @@
   "Gets the error associated with an invalid username if there is one."
   [val]
   (cond
-    (= val "") "Use a non-empty username."
+    (or (= val "") (nil? val)) "Use a non-empty username."
     (ormap (partial = " ") (.split val "")) "The username should not include spaces."
     :else nil))
 
@@ -205,11 +205,14 @@
          :on-submit (fn [x]
                       (.preventDefault x)
                        ;; if the user exists, they can enter the application.
-                      (if (and @v (not (get-invalid-username-error @v)))
-                        (do
-                          (swap! app-state assoc :user @v)
-                          (swap! app-state assoc :active-panel :chat)
-                          (setup-websockets!))))}
+                      (let
+                       [username-error (get-invalid-username-error @v)]
+                        (if (and @v (not username-error))
+                          (do
+                            (swap! app-state assoc :user @v)
+                            (swap! app-state assoc :active-panel :chat)
+                            (setup-websockets!))
+                          (reset! notif-error username-error))))}
         [:input {:type "text"
                  :class "username-input"
                  :value @v
