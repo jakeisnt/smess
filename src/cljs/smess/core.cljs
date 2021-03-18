@@ -152,12 +152,13 @@
   "A single message."
   [m] [:div {:key (:id m) :id (:id m) :class "message"}
        (markdown-preview (:msg m))
-       [:button {:id (str (:id m) "-text-button")
-                 :class "text-button"
-                 :onClick (fn [] (to-clipboard (:msg m)))}
-        "copy text"]
-       [:button "copy link"]
-       [:button "reply"]])
+       [:div {:class "message-buttons"}
+        [:button {:id (str (:id m) "-text-button")
+                  :class "text-button"
+                  :onClick (fn [] (to-clipboard (:msg m)))}
+         "copy text"]
+        [:button "copy link"]
+        [:button "reply"]]])
 
 (defn chat-history []
   (reagent/create-class
