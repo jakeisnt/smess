@@ -231,10 +231,9 @@
   "Shows all of the users currently in the channel."
   []
   [:div {:class "sidebar"}
-   [:h5 "users"]
-   (into [:ul]
-         (for [[k v] @users]
-           ^{:key k} (username-box v)))])
+   [:div {:class "user-list"}
+    (for [[k v] @users]
+      ^{:key k} (username-box v))]])
 
 (defn chat-view
   "Displays all of the chat history."
