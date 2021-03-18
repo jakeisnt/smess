@@ -87,6 +87,7 @@
        [:form
         {:on-submit (fn [x]
                       (.preventDefault x)
+                      ;; (if (and (= (.-keyCode x) 13) (not (.-shiftKey x)))
                       (when-let [msg @v] (send-msg {:msg msg
                                                     :user (:user @app-state)
                                                     :m-type :chat}))
