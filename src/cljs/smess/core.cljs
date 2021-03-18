@@ -138,6 +138,8 @@
                  ;; start with an empty user and list
                                    {:user "" :list '()} message-list))))
 
+(defn to-clipboard [txt] (.writeText (.-clipboard js/navigator) txt))
+
 (defn username-box
   "An interactive box containing the username."
   [username]
@@ -145,6 +147,17 @@
    (if (= (:user @app-state) username)
      (str "me [ " username " ]")
      username)])
+
+(defn message
+  "A single message."
+  [m] [:div {:key (:id m) :id (:id m) :class "message"}
+       (markdown-preview (:msg m))
+       [:button {:id (str (:id m) "-text-button")
+                 :class "text-button"
+                 :onClick (fn [] (to-clipboard (:msg m)))}
+        "copy text"]
+       [:button "copy link"]
+       [:button "reply"]])
 
 (defn chat-history []
   (reagent/create-class
@@ -154,9 +167,7 @@
                         ^{:key (:user usermsg)}
                         [:div {:class "usermsg"}
                          (username-box (:user usermsg))
-                         (for [m (:messages usermsg)]
-                           [:div {:key (:id m) :class "message"}
-                            (markdown-preview (:msg m))])]))])
+                         (for [m (:messages usermsg)] (message m))]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]

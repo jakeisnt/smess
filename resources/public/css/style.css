@@ -26,6 +26,7 @@ body {
 }
 
 .header {
+    user-select: none;
     grid-area: header;
     max-height: 4vh;
     background-color: aquamarine;
@@ -92,6 +93,8 @@ body {
 
 .message {
     padding-left: 0.5em;
+    display: flex;
+    flex-direction: row;
 }
 
 .message-input {
