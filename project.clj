@@ -9,6 +9,8 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.clojure/clojurescript "1.10.439"]
                  [org.clojure/core.async  "0.4.490"]
+                 [org.clojure/java.jdbc "0.7.8"]
+                 [org.xerial/sqlite-jdbc "3.23.1"]
                  [compojure "1.6.1"]
                  [jarohen/chord "0.8.1"]
                  [markdown-clj "1.10.5"]
