@@ -139,6 +139,6 @@ p {
     font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.img {
-    max-height: 1em;
+img {
+    max-height: 10em;
 }
