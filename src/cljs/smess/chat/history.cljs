@@ -46,8 +46,6 @@
                                         :id (:id msg)
                                         :messages (list msg)}
                                        last-list)}]
-                   (println ret-obj)
-                   (println msg)
                    ret-obj))))
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
