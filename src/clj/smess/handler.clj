@@ -1,8 +1,7 @@
 (ns smess.handler
   (:require
-   [org.httpkit.server :as hk]
    [chord.http-kit :refer [with-channel]]
-   [compojure.core :refer :all]
+   [compojure.core :refer [defroutes GET]]
    [compojure.route :as route]
    [clojure.core.async :as async]
    [ring.util.response :as resp]
