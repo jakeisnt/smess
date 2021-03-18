@@ -7,5 +7,5 @@
   [users app-state]
   [:div {:class "sidebar"}
    [:div {:class "user-list"}
-    (for [[k v] @users]
-      ^{:key k} (username-box v app-state))]])
+    (doall (for [[k v] @users]
+             ^{:key k} (username-box v app-state)))]])
