@@ -12,4 +12,4 @@
    [chat-input app-state]
    [:div {:class "header"}
     [:h3 "smess"]]
-   [sidebar users]])
+   [sidebar users app-state]])

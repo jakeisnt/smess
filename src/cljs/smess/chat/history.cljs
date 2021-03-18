@@ -46,7 +46,7 @@
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
-(defn message
+(defn- message
   "A single message."
   [m] [:div {:key (:id m) :id (:id m) :class "message"}
        (markdown-preview (:msg m))

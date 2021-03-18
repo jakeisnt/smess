@@ -1,7 +1,8 @@
 (ns smess.chat.input
   (:require
    [smess.chat.markdown :refer [markdown-preview]]
-   [smess.sockets :refer [send-msg]]))
+   [smess.sockets :refer [send-msg]]
+   [reagent.core :as reagent :refer [atom]]))
 
 (defn chat-input
   "Allow users to input text and submit it to send messages."

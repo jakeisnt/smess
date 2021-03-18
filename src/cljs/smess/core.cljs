@@ -16,7 +16,7 @@
   []
   (case (:active-panel @app-state)
     :login [login-view app-state msg-list users]
-    :chat [chat-view]))
+    :chat [chat-view app-state msg-list users]))
 
 (reagent/render-component [app-container]
                           (. js/document (getElementById "app")))

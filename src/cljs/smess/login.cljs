@@ -2,7 +2,8 @@
   (:require
    [smess.utils :refer [ormap]]
    [smess.sockets :refer [setup-websockets!]]
-   [smess.notifications :refer [enable-notifications]]))
+   [smess.notifications :refer [enable-notifications]]
+   [reagent.core :as reagent :refer [atom]]))
 
 (defn get-invalid-username-error
   "Gets the error associated with an invalid username if there is one."
