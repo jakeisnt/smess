@@ -20,15 +20,12 @@ body {
         height: 100vh;
         grid-template-areas: "header header" "history sidebar" "text-input text-input";
     }
-    .sidebar {
-        display: grid;
-    }
 }
 
 .header {
     user-select: none;
     grid-area: header;
-    max-height: 4vh;
+    max-height: 4em;
     background-color: aquamarine;
     text-align: center;
 }
@@ -39,7 +36,6 @@ body {
     padding: 2em;
     border-style: double;
     overflow-y: scroll;
-    display: none;
 }
 
 .history {
@@ -76,8 +72,6 @@ body {
 }
 
 .username {
-    margin-bottom: 0em;
-    font: monospace;
     color: red;
     text-decoration: underline;
 }
@@ -120,10 +114,6 @@ body {
     border-radius: 4px;
 }
 
-p {
-    text-decoration: none;
-    margin: 0;
-}
 
 .preview-button {
     margin: 1.2em;
@@ -138,10 +128,11 @@ p {
     background-color: white;
 }
 
-.markdown-preview {
-    font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
+/* html element styles */
 img {
     max-height: 10em;
+}
+
+p {
+    text-decoration: none;
 }
