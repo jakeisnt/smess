@@ -100,7 +100,7 @@
                   :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]
          [:button {:type "submit"
-                   :class "message-button"} "Send"]]]])))
+                   :class "send-message-button"} "Send"]]]])))
 
 (defn flip-group-chat-results [msglists]
   (reverse (map (fn [elem] {:user (:user elem)
@@ -152,12 +152,13 @@
   "A single message."
   [m] [:div {:key (:id m) :id (:id m) :class "message"}
        (markdown-preview (:msg m))
-       [:button {:id (str (:id m) "-text-button")
-                 :class "text-button"
-                 :onClick (fn [] (to-clipboard (:msg m)))}
-        "copy text"]
-       [:button "copy link"]
-       [:button "reply"]])
+       [:div {:class "message-buttons"}
+        [:button {:id (str (:id m) "-text-button")
+                  :class "text-button"
+                  :onClick (fn [] (to-clipboard (:msg m)))}
+         "copy text"]
+        [:button "copy link"]
+        [:button "reply"]]])
 
 (defn chat-history []
   (reagent/create-class
@@ -181,6 +182,18 @@
       (.requestPermission js/Notification))
     (.warn js/console "This browser may not have notification capabilities.")))
 
+(defn ormap
+  "Returns true if any of the values are true."
+  [pred ls] (reduce (fn [acc i] (or acc (pred i))) nil ls))
+
+(defn get-invalid-username-error
+  "Gets the error associated with an invalid username if there is one."
+  [val]
+  (cond
+    (or (= val "") (nil? val)) "Use a non-empty username."
+    (ormap (partial = " ") (.split val "")) "The username should not include spaces."
+    :else nil))
+
 (defn login-view
   "Allows users to pick a username and enter the chat."
   []
@@ -188,35 +201,39 @@
         notif-error (atom nil)]
     (fn []
       [:div {:class "login-container"}
-       [:div {:class "login"}
-        [:form
-         {:on-submit (fn [x]
-                       (.preventDefault x)
+       [:form
+        {:class "login"
+         :on-submit (fn [x]
+                      (.preventDefault x)
                        ;; if the user exists, they can enter the application.
-                       (if @v (do
-                                (swap! app-state assoc :user @v)
-                                (swap! app-state assoc :active-panel :chat)
-                                (setup-websockets!))
-                           (reset! notif-error "Use a non-empty username.")))}
-         [:input {:type "text"
-                  :class "username-input"
-                  :value @v
-                  :placeholder "Pick a username"
-                  :on-change #(reset! v (-> % .-target .-value))}]
-         [:br]
-         [:button {:type "submit"
-                   :onClick enable-notifications
-                   :class "button-primary start-chatting-button"} "Start chatting"]
-         (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]]])))
+                      (let
+                       [username-error (get-invalid-username-error @v)]
+                        (if (and @v (not username-error))
+                          (do
+                            (swap! app-state assoc :user @v)
+                            (swap! app-state assoc :active-panel :chat)
+                            (setup-websockets!))
+                          (reset! notif-error username-error))))}
+        [:input {:type "text"
+                 :class "username-input"
+                 :value @v
+                 :placeholder "Pick a username"
+                 :on-change #(let
+                              [val (-> % .-target .-value)]
+                               (reset! v val)
+                               (reset! notif-error (get-invalid-username-error val)))}]
+        [:button {:type "submit"
+                  :onClick enable-notifications
+                  :class "button-primary start-chatting-button"} "Start chatting"]]
+       [:div {:class "error-tip-container"} (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]])))
 
 (defn sidebar
   "Shows all of the users currently in the channel."
   []
   [:div {:class "sidebar"}
-   [:h5 "users"]
-   (into [:ul]
-         (for [[k v] @users]
-           ^{:key k} (username-box v)))])
+   [:div {:class "user-list"}
+    (for [[k v] @users]
+      ^{:key k} (username-box v))]])
 
 (defn chat-view
   "Displays all of the chat history."
