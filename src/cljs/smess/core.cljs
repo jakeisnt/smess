@@ -83,7 +83,7 @@
   (let [v (atom nil)]
     (fn []
       [:div {:class "text-input"}
-       (if @v [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
+       (if (and @v (not= "" @v)) [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
        [:form
         {:on-submit (fn [x]
                       (.preventDefault x)
