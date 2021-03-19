@@ -32,7 +32,7 @@
                           (do
                             (swap! app-state assoc :user @v)
                             (swap! app-state assoc :active-panel :chat)
-                            (add-cookie! {:username @v :SameSite "Lax"})
+                            (add-cookie! {:username @v :samesite "Strict"})
                             (enable-notifications)
                             (setup-websockets! app-state msg-list users))
                           (reset! notif-error username-error))))}
