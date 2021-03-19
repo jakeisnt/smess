@@ -9,7 +9,7 @@
   [app-state msg-list users]
   [:div {:class "chat-container"}
    [chat-history msg-list app-state]
-   [chat-input app-state]
+   [chat-input app-state {:user "jake" :msg "this is a chat message"}]
    [:div {:class "header"}
     [:h3 "smess"]]
    [sidebar users app-state]])

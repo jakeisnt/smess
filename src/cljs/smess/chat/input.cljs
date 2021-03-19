@@ -6,10 +6,13 @@
 
 (defn chat-input
   "Allow users to input text and submit it to send messages."
-  [app-state]
+  [app-state reply-to]
   (let [v (atom nil)]
     (fn []
+      (println reply-to)
       [:div {:class "text-input"}
+       (if reply-to
+         [:div {:class "markdown-preview-box"} (str "reply to " (:user reply-to) ": ") (markdown-preview (:msg reply-to))] nil)
        (if (and @v (not= "" @v))
          [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
        [:form
