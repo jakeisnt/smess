@@ -2,7 +2,7 @@
   (:require
    [smess.utils :refer [ormap]]
    [smess.sockets :refer [setup-websockets!]]
-   [smess.cookies :refer [cookie->clj! clj->cookie!]]
+   [smess.cookies :refer [cookie->clj! add-cookie!]]
    [smess.notifications :refer [enable-notifications]]
    [reagent.core :as reagent :refer [atom]]))
 
@@ -32,7 +32,7 @@
                           (do
                             (swap! app-state assoc :user @v)
                             (swap! app-state assoc :active-panel :chat)
-                            (clj->cookie! {:username @v :SameSite "Lax"})
+                            (add-cookie! {:username @v :SameSite "Lax"})
                             (enable-notifications)
                             (setup-websockets! app-state msg-list users))
                           (reset! notif-error username-error))))}

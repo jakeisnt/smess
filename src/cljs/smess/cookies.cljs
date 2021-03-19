@@ -36,3 +36,8 @@
 (defn clj->cookie!
   "Convert a clojure map to a cookie, writing the cookie."
   [obj] (set-cookie! (clj->cookie obj)))
+
+(defn add-cookie!
+  "Add a cookie to the existing cookies."
+  [clj]
+  (clj->cookie! (conj (cookie->clj!) clj)))
