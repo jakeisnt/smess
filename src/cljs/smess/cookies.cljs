@@ -1,5 +1,7 @@
 (ns smess.cookies)
 
+(defn get-cookie! [] (.-cookie js/document))
+
 (defn cookie->clj
   "Convert a cookie string to a clojure map."
   [cookiestr]
@@ -14,10 +16,12 @@
 
 (defn cookie->clj!
   "Gets the browser cookie as a clojure map into memory."
-  []
-  (let
-   [cookiestr (.-cookie js/document)]
-    (cookie->clj cookiestr)))
+  [] (cookie->clj (get-cookie!)))
+
+(defn set-cookie!
+  "Set the cookie value to a specific string."
+  [cookiestr]
+  (set! (.-cookie js/document) cookiestr))
 
 (defn clj->cookie
   "Convert a clojure map to a cookie"
@@ -31,4 +35,4 @@
 (defn clj->cookie!
   "Convert a clojure map to a cookie, writing the cookie."
   [obj]
-  (set! (.-cookie js/document) (clj->cookie obj)))
+  (set-cookie! (clj->cookie obj)))
