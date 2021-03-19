@@ -1,6 +1,8 @@
 (ns smess.cookies)
 
-(defn get-cookie! [] (.-cookie js/document))
+(defn get-cookie!
+  "Get the document's cookie."
+  [] (.-cookie js/document))
 
 (defn cookie->clj
   "Convert a cookie string to a clojure map."
@@ -26,11 +28,9 @@
 (defn clj->cookie
   "Convert a clojure map to a cookie"
   [obj]
-  (let
-   [keys (keys obj)
-    lst (map (fn [key] (str key "=" (get obj key))) keys)
-    cookiestr (.join lst ";")]
-    cookiestr))
+  (.join
+   (map (fn [key] (str key "=" (get obj key))) (keys obj))
+   ";"))
 
 (defn clj->cookie!
   "Convert a clojure map to a cookie, writing the cookie."
