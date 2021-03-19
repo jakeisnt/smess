@@ -2,6 +2,7 @@
   (:require
    [smess.utils :refer [ormap]]
    [smess.sockets :refer [setup-websockets!]]
+   [smess.cookies :refer [cookie->clj! clj->cookie!]]
    [smess.notifications :refer [enable-notifications]]
    [reagent.core :as reagent :refer [atom]]))
 
@@ -16,7 +17,7 @@
 (defn login-view
   "Allows users to pick a username and enter the chat."
   [app-state msg-list users]
-  (let [v (atom nil)
+  (let [v (atom (:username (cookie->clj!)))
         notif-error (atom nil)]
     (fn []
       [:div {:class "login-container"}
@@ -31,6 +32,7 @@
                           (do
                             (swap! app-state assoc :user @v)
                             (swap! app-state assoc :active-panel :chat)
+                            (clj->cookie! {:username @v :SameSite "Lax"})
                             (enable-notifications)
                             (setup-websockets! app-state msg-list users))
                           (reset! notif-error username-error))))}

@@ -4,6 +4,8 @@
   "Get the document's cookie."
   [] (.-cookie js/document))
 
+(defn remove-spaces [string] (.join (.split string " ") ""))
+
 (defn cookie->clj
   "Convert a cookie string to a clojure map."
   [cookiestr]
@@ -14,7 +16,7 @@
          ;; generates ((key, value), (key, value)) etc...
               (map
                (fn [str] (.split str "="))
-               (.split cookiestr ";")))))
+               (.split (remove-spaces cookiestr) ";")))))
 
 (defn cookie->clj!
   "Gets the browser cookie as a clojure map into memory."
@@ -22,17 +24,15 @@
 
 (defn set-cookie!
   "Set the cookie value to a specific string."
-  [cookiestr]
-  (set! (.-cookie js/document) cookiestr))
+  [cookiestr] (set! (.-cookie js/document) cookiestr))
 
 (defn clj->cookie
   "Convert a clojure map to a cookie"
   [obj]
   (.join
-   (map (fn [key] (str key "=" (get obj key))) (keys obj))
+   (clj->js (map (fn [key] (str (.substring (str key) 1) "=" (get obj key))) (keys obj)))
    ";"))
 
 (defn clj->cookie!
   "Convert a clojure map to a cookie, writing the cookie."
-  [obj]
-  (set-cookie! (clj->cookie obj)))
+  [obj] (set-cookie! (clj->cookie obj)))
