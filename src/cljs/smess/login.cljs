@@ -6,6 +6,13 @@
    [smess.notifications :refer [enable-notifications]]
    [reagent.core :as reagent :refer [atom]]))
 
+
+;; steps:
+;; - poll the websocket channel to see all of the users
+;; - determine if the username string is in them
+;; - disallow it if it is
+
+
 (defn get-invalid-username-error
   "Gets the error associated with an invalid username if there is one."
   [val]
