@@ -45,7 +45,10 @@
       (if error
         (println (str "Received the websocket error " error))
         (do
-          (send-msg {:m-type :new-user
-                     :msg (:user @app-state)})
           (send-msgs ws-channel)
           (receive-msgs ws-channel app-state msg-list users))))))
+
+(defn add-user!
+  [name]
+  (send-msg {:m-type :new-user
+             :msg (:user name)}))

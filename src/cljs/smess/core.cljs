@@ -2,6 +2,8 @@
   (:require
    [smess.login :refer [login-view]]
    [smess.chat.core :refer [chat-view]]
+   [smess.notifications :refer [enable-notifications]]
+   [smess.sockets :refer [setup-websockets!]]
    [reagent.core :as reagent :refer [atom]]))
 
 (defonce app-state (atom {:text "Hello world!"
@@ -18,5 +20,7 @@
     :login [login-view app-state msg-list users]
     :chat [chat-view app-state msg-list users]))
 
+(enable-notifications)
+(setup-websockets! app-state msg-list users)
 (reagent/render-component [app-container]
                           (. js/document (getElementById "app")))
