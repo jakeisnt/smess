@@ -12,7 +12,7 @@
       (println reply-to)
       [:div {:class "text-input"}
        (if reply-to
-         [:div {:class "markdown-preview-box"} (str "reply to " (:user reply-to) ": ") (markdown-preview (:msg reply-to))] nil)
+         [:div {:class "markdown-preview-box"} (str "reply to " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))] nil)
        (if (and @v (not= "" @v))
          [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
        [:form
@@ -20,6 +20,7 @@
                       (.preventDefault x)
                       ;; (if (and (= (.-keyCode x) 13) (not (.-shiftKey x)))
                       (when-let [msg @v] (send-msg {:msg msg
+                                                    :reply-to @reply-to
                                                     :user (:user @app-state)
                                                     :m-type :chat}))
                       (reset! v nil))}
