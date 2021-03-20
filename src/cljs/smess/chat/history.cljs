@@ -3,6 +3,7 @@
    [reagent.core :as reagent]
    [smess.chat.utils :refer [to-clipboard]]
    [smess.chat.username :refer [username-box]]
+   [smess.chat.reply :refer [message-reply]]
    [smess.chat.markdown :refer [markdown-preview]]))
 
 (defn- flip-group-chat-results
@@ -44,27 +45,40 @@
                                 :list (cons
                                        {:user (:user msg)
                                         :id (:id msg)
+                                        :key (:id msg)
                                         :messages (list msg)}
                                        last-list)}]
                    ret-obj))))
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
+;; TODO the color doesn't work because this isn't a component.
 (defn- message
   "A single message."
-  [m] [:div {:key (str "msg-" (:id m)) :class "message"}
-       (markdown-preview (:msg m))
-       [:div {:class "message-buttons"}
-        [:button {:key (str (:id m) "-text-button")
-                  :class "text-button"
-                  :onClick (fn [] (to-clipboard (:msg m)))}
-         "copy text"]
-        [:button "copy link"]
-        [:button "reply"]]])
+  [m selected-message]
+  (reagent/create-class
+   {:render (fn []
+              [:div {:key (str "msg-" (:id m))
+                     :id (str "msg-" (:id m))
+                     :class "message"
+                     :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
+               (if (:reply-to m) (message-reply (:reply-to m)) nil)
+               [:div {:class "message-content"
+                      :key (str "message-content" (:id m))}
+                (markdown-preview (:msg m))
+                [:div {:class "message-buttons"
+                       :key (str "message-buttons" (:id m))}
+                 [:button {:key (str (:id m) "-text-button")
+                           :class "text-button"
+                           :onClick (fn [] (to-clipboard (:msg m)))}
+                  "copy text"]
+                 [:button {:key (str (:id m) "-link-button")} "copy link"]
+                 [:button {:key (str (:id m) "-reply-button")
+                           :onClick (fn [] (reset! selected-message m))} "reply"]]]])}))
 
 (defn chat-history
   "Display the history of the chat."
-  [msg-list app-state]
+  [msg-list app-state selected-message]
   (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
@@ -72,7 +86,10 @@
                         [:div {:key (str (:user usermsg) "-" (:id usermsg))
                                :class "usermsg"}
                          (username-box (:user usermsg) app-state)
-                         (for [m (:messages usermsg)] (message m))]))])
+                         (for [m (:messages usermsg)]
+
+                           ^{:key (str "msg-" (:id m))}
+                           [message m selected-message])]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
