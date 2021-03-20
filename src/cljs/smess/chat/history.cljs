@@ -50,12 +50,18 @@
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
+(defn- message-reply
+  ;; A reply to a previous message.
+  [msg]
+  [:div {:class "message-reply"} (str "> " (:user msg) ": " (:msg msg))])
+
 ;; TODO the color doesn't work because this isn't a component.
 (defn- message
   "A single message."
   [m selected-message] [:div {:key (str "msg-" (:id m))
                               :class "message"
                               :style {:background-color (if (= (:id m) (:id @selected-message)) "aquamarine" nil)}}
+                        (if (:reply-to m) (message-reply (:reply-to m)) nil)
                         (markdown-preview (:msg m))
                         [:div {:class "message-buttons"}
                          [:button {:key (str (:id m) "-text-button")

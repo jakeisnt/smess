@@ -164,6 +164,15 @@ body {
 }
 
 
+.message-reply {
+  margin-top: 2em;
+  font-size: 16px;
+  background-color: Gainsboro;
+  border: 2px solid black;
+  padding: 0.5em;
+}
+
+
 /* html element styles */
 img {
     max-height: 10em;
