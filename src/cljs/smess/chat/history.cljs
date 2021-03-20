@@ -62,14 +62,15 @@
                               :class "message"
                               :style {:background-color (if (= (:id m) (:id @selected-message)) "aquamarine" nil)}}
                         (if (:reply-to m) (message-reply (:reply-to m)) nil)
-                        (markdown-preview (:msg m))
-                        [:div {:class "message-buttons"}
-                         [:button {:key (str (:id m) "-text-button")
-                                   :class "text-button"
-                                   :onClick (fn [] (to-clipboard (:msg m)))}
-                          "copy text"]
-                         [:button  "copy link"]
-                         [:button {:onClick (fn [] (reset! selected-message m))} "reply"]]])
+                        [:div {:class "message-content"}
+                         (markdown-preview (:msg m))
+                         [:div {:class "message-buttons"}
+                          [:button {:key (str (:id m) "-text-button")
+                                    :class "text-button"
+                                    :onClick (fn [] (to-clipboard (:msg m)))}
+                           "copy text"]
+                          [:button  "copy link"]
+                          [:button {:onClick (fn [] (reset! selected-message m))} "reply"]]]])
 
 (defn chat-history
   "Display the history of the chat."

@@ -68,20 +68,6 @@ body {
     overflow-x: scroll:
 }
 
-@media only screen and (min-width: 500px)  {
-    .chat-container {
-        display: grid;
-        width: 100vw;
-        height: 100vh;
-        grid-template-areas: "header header" "history sidebar" "text-input text-input";
-    }
-    .user-list {
-      flex-direction: column;
-      overflow-y: scroll;
-      border: 2px solid black;
-    }
-}
-
 .header {
     user-select: none;
     grid-area: header;
@@ -95,7 +81,7 @@ body {
 
 
 .history {
-    padding: 2em;
+    padding: 1.5em;
     grid-area: history;
     background-color: white;
     max-height: calc(100vh-200px);
@@ -111,7 +97,8 @@ body {
 .username {
     color: red;
     text-decoration: underline;
-    padding:  0.5em;
+    /* padding:  -0.5em 0 0 0; */
+    margin-left: -1em;
 }
 
 .my-username {
@@ -124,12 +111,22 @@ body {
 }
 
 .message {
-    padding-left: 0.3em;
+  padding: 1em 0.5em;
+    display: flex;
+    flex-direction: column;
+    border-top: 1px dashed black;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .message-buttons {
   display: flex;
-  margin: -1em -0.25em;
+  height: 3.5em;
+  max-width: 10em;
 }
 
 .message-input {
@@ -150,8 +147,10 @@ body {
 .markdown-preview-box {
     border: 2px solid black;
     margin: 1em;
-    padding: 0 1em;
+    padding: 0.5em;
     background-color: white;
+    display: flex;
+    align-items: center;
 }
 
 .send-message-button {
@@ -163,14 +162,31 @@ body {
     background-color: white;
 }
 
-
 .message-reply {
-  margin-top: 2em;
+  margin-bottom: 0.5em;
   font-size: 16px;
-  background-color: Gainsboro;
+  background-color: LightYellow;
   border: 2px solid black;
   padding: 0.5em;
 }
+
+@media only screen and (min-width: 500px)  {
+    .chat-container {
+        display: grid;
+        width: 100vw;
+        height: 100vh;
+        grid-template-areas: "header header" "history sidebar" "text-input text-input";
+    }
+    .user-list {
+      flex-direction: column;
+      overflow-y: scroll;
+      border: 2px solid black;
+    }
+    .message-content {
+      flex-direction: row;
+    }
+}
+
 
 
 /* html element styles */
@@ -180,6 +196,7 @@ img {
 
 p {
     text-decoration: none;
+    margin: 0;
 }
 
 input {

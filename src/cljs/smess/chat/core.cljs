@@ -5,15 +5,15 @@
    [reagent.core :as reagent :refer [atom]]
    [smess.chat.sidebar :refer [sidebar]]))
 
-;; TODO make this nil so that i am not always replying to a message
-(defonce selected-message (atom {:user "jake" :msg "this is a chat message"}))
+;; the currently selected message to reply to
+(defonce reply-to-message (atom nil))
 
 (defn chat-view
   "Displays all of the chat history."
   [app-state msg-list users]
   [:div {:class "chat-container"}
-   [chat-history msg-list app-state selected-message]
-   [chat-input app-state selected-message]
+   [chat-history msg-list app-state reply-to-message]
+   [chat-input app-state reply-to-message]
    [:div {:class "header"}
     [:h3 "smess"]]
    [sidebar users app-state]])
