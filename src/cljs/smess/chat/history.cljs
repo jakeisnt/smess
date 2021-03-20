@@ -57,6 +57,7 @@
   [m selected-message]
   (reagent/create-class
    {:render (fn [] [:div {:key (str "msg-" (:id m))
+                          :id (str "msg-" (:id m))
                           :class "message"
                           :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
                     (if (:reply-to m) (message-reply (:reply-to m)) nil)
