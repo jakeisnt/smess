@@ -52,19 +52,19 @@
 
 (defn- message
   "A single message."
-  [m] [:div {:key (str "msg-" (:id m)) :class "message"}
-       (markdown-preview (:msg m))
-       [:div {:class "message-buttons"}
-        [:button {:key (str (:id m) "-text-button")
-                  :class "text-button"
-                  :onClick (fn [] (to-clipboard (:msg m)))}
-         "copy text"]
-        [:button "copy link"]
-        [:button "reply"]]])
+  [m selected-message] [:div {:key (str "msg-" (:id m)) :class "message"}
+                        (markdown-preview (:msg m))
+                        [:div {:class "message-buttons"}
+                         [:button {:key (str (:id m) "-text-button")
+                                   :class "text-button"
+                                   :onClick (fn [] (to-clipboard (:msg m)))}
+                          "copy text"]
+                         [:button  "copy link"]
+                         [:button {:onClick (fn [] (reset! selected-message m))} "reply"]]])
 
 (defn chat-history
   "Display the history of the chat."
-  [msg-list app-state]
+  [msg-list app-state selected-message]
   (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
@@ -72,7 +72,7 @@
                         [:div {:key (str (:user usermsg) "-" (:id usermsg))
                                :class "usermsg"}
                          (username-box (:user usermsg) app-state)
-                         (for [m (:messages usermsg)] (message m))]))])
+                         (for [m (:messages usermsg)] (message m selected-message))]))])
 
     :component-did-update (fn [this]
                             (let [node (reagent/dom-node this)]
