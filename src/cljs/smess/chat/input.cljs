@@ -11,9 +11,9 @@
     (fn []
       [:div {:class "text-input"}
        (if @reply-to
-         [:div {:class "markdown-preview-box"} (str "reply to " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))] nil)
+         [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))] nil)
        (if (and @v (not= "" @v))
-         [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
+         [:div {:class "preview-box"} (markdown-preview @v)] nil)
        [:form
         {:on-submit (fn [x]
                       (.preventDefault x)

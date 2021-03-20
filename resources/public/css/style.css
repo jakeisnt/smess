@@ -97,7 +97,6 @@ body {
 .username {
     color: red;
     text-decoration: underline;
-    /* padding:  -0.5em 0 0 0; */
     margin-left: -1em;
 }
 
@@ -110,8 +109,13 @@ body {
     padding-top: 1em;
 }
 
+.markdown-preview {
+  display: flex;
+  align-items: center;
+}
+
 .message {
-  padding: 1em 0.5em;
+  /* padding: 1em 0.5em; */
     display: flex;
     flex-direction: column;
     border-top: 1px dashed black;
@@ -125,7 +129,8 @@ body {
 
 .message-buttons {
   display: flex;
-  height: 3.5em;
+  padding-right: 0.5em;
+  max-height: 3.5em;
   max-width: 10em;
 }
 
@@ -144,13 +149,18 @@ body {
     padding: 0 1em;
 }
 
-.markdown-preview-box {
+.preview-box {
     border: 2px solid black;
     margin: 1em;
     padding: 0.5em;
     background-color: white;
     display: flex;
     align-items: center;
+}
+
+.reply-preview {
+  font-size: 16px;
+  background-color: LightYellow;
 }
 
 .send-message-button {
@@ -163,7 +173,7 @@ body {
 }
 
 .message-reply {
-  margin-bottom: 0.5em;
+  margin: 0.5em 0;
   font-size: 16px;
   background-color: LightYellow;
   border: 2px solid black;
@@ -184,6 +194,11 @@ body {
     }
     .message-content {
       flex-direction: row;
+    }
+    .message-buttons {
+      max-width: 99999999em;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 }
 
