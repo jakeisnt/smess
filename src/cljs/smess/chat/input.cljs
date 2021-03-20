@@ -9,9 +9,8 @@
   [app-state reply-to]
   (let [v (atom nil)]
     (fn []
-      (println reply-to)
       [:div {:class "text-input"}
-       (if reply-to
+       (if @reply-to
          [:div {:class "markdown-preview-box"} (str "reply to " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))] nil)
        (if (and @v (not= "" @v))
          [:div {:class "markdown-preview-box"} (markdown-preview @v)] nil)
@@ -23,7 +22,8 @@
                                                     :reply-to @reply-to
                                                     :user (:user @app-state)
                                                     :m-type :chat}))
-                      (reset! v nil))}
+                      (reset! v nil)
+                      (reset! reply-to nil))}
         [:div {:style {:display "flex"
                        :flex-direction "row"}}
          [:input {:type "text"
