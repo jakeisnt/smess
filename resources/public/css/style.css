@@ -5,6 +5,10 @@ body {
   padding: 0;
 }
 
+#app {
+  background-color: whitesmoke;
+}
+
 /* login flow */
 .login-container {
   display: grid;
