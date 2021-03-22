@@ -33,5 +33,8 @@
                   :class "message-input"
                   :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]
+         (if @reply-to
+           [:button {:class "send-message-button"
+                     :onClick (fn [] (reset! reply-to nil))} "Deselect"] nil)
          [:button {:type "submit"
                    :class "send-message-button"} "Send"]]]])))
