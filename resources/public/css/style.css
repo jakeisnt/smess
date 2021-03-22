@@ -203,6 +203,9 @@ body {
     width: 80vw;
     margin: auto;
   }
+  .history {
+    padding: 2em 5em;
+  } 
   .message-content {
     flex-direction: row;
   }
@@ -211,6 +214,16 @@ body {
     padding-top: 0;
     padding-bottom: 0;
   }
+}
+
+
+@media only screen and (min-width: 1400px)  {
+  .chat-container {
+    width: 40vw;
+  }
+  .history {
+    padding: 2em 10em;
+  } 
 }
 
 /* html element styles */
