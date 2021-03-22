@@ -70,7 +70,7 @@
                      :id (str "msg-" (:id m))
                      :class "message"
                      :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
-               (if (:reply-to m) (message-reply (:reply-to m)) nil)
+               (if (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))] nil)
                [:div {:class "message-content"
                       :key (str "message-content" (:id m))}
                 (markdown-preview (:msg m))
