@@ -81,7 +81,9 @@
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick (fn [] (reset! selected-message m)
+                           :onClick (fn [] (if (= @selected-message m)
+                                             (reset! selected-message nil)
+                                             (reset! selected-message m))
                                       (focus-element "message-input-box"))}
                   "reply"]]]])}))
 
