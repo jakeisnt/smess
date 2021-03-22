@@ -52,6 +52,14 @@
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
+(defn focus-element
+  "Focus an HTML element with the provided ID."
+  [elem-id]
+  (let
+   [elem (.getElementById js/document elem-id)]
+    (.select elem)
+    (.focus elem)))
+
 ;; TODO the color doesn't work because this isn't a component.
 (defn- message
   "A single message."
@@ -74,7 +82,9 @@
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick (fn [] (reset! selected-message m))} "reply"]]]])}))
+                           :onClick (fn [] (reset! selected-message m)
+                                      (focus-element "message-input-box"))}
+                  "reply"]]]])}))
 
 (defn chat-history
   "Display the history of the chat."
