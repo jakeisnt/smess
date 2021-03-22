@@ -88,7 +88,6 @@ body {
 
 .text-input {
   background-color: whitesmoke;
-  width: 100%;
 }
 
 .username {
@@ -108,6 +107,7 @@ body {
 .markdown-preview {
   display: flex;
   align-items: center;
+  padding-left: 0.5em;
 }
 
 .message {
@@ -132,9 +132,10 @@ body {
   width: 100%;
   color: black;
   border: 2px solid black;
-  margin: 1em;
+  margin: 0.5em 0.5em;
   padding: 1em 1em;
   background-color: white;
+  flex-grow: 1;
 }
 
 .preview-button {
@@ -145,7 +146,8 @@ body {
 
 .preview-box {
   border: 2px solid black;
-  margin: 1em;
+  margin: 0.5em 0.5em;
+  margin-bottom: 0;
   padding: 0.5em;
   background-color: white;
   display: flex;
@@ -160,8 +162,7 @@ body {
 .send-message-button {
   border: 2px outset black;
   height: 100%;
-  padding: 1em;
-  margin: 1em 1em;
+  padding: 0.75em 0.25em;
   color: black;
   background-color: white;
 }
@@ -171,7 +172,7 @@ body {
   font-size: 16px;
   background-color: LightYellow;
   border: 2px solid black;
-  padding: 0.5em;
+  padding: 0.25em;
 }
 
 @media only screen and (min-width: 500px)  {
