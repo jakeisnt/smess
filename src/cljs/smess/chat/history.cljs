@@ -52,7 +52,14 @@
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
-;; TODO the color doesn't work because this isn't a component.
+(defn focus-element
+  "Focus an HTML element with the provided ID."
+  [elem-id]
+  (let
+   [elem (.getElementById js/document elem-id)]
+    (.select elem)
+    (.focus elem)))
+
 (defn- message
   "A single message."
   [m selected-message]
@@ -62,7 +69,7 @@
                      :id (str "msg-" (:id m))
                      :class "message"
                      :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
-               (if (:reply-to m) (message-reply (:reply-to m)) nil)
+               (if (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))] nil)
                [:div {:class "message-content"
                       :key (str "message-content" (:id m))}
                 (markdown-preview (:msg m))
@@ -74,7 +81,9 @@
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick (fn [] (reset! selected-message m))} "reply"]]]])}))
+                           :onClick (fn [] (reset! selected-message m)
+                                      (focus-element "message-input-box"))}
+                  "reply"]]]])}))
 
 (defn chat-history
   "Display the history of the chat."

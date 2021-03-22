@@ -1,7 +1,12 @@
 @import url("https://jakeisnt.github.io/styles/main.css");
 body {
+  font-size: 16px;
   margin: 0;
   padding: 0;
+}
+
+#app {
+  background-color: whitesmoke;
 }
 
 /* login flow */
@@ -46,31 +51,28 @@ body {
 
 /* chat flow */
 .chat-container {
-  display: grid;
   width: 100vw;
   height: 100vh;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  grid-template-areas: "header" "sidebar" "history" "text-input";
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
-  grid-area: sidebar;
-  background-color: white;
-  border-bottom: 2px solid black;
+  background-color: whitesmoke;
 }
 
 .user-list {
-  padding: 0;
-  margin: 0;
+  padding: 0.5em;
   display: flex;
   flex-direction: row;
-  overflow-x: scroll:
+}
+
+.userlist-username {
+  padding: 0 1em;
 }
 
 .header {
   user-select: none;
-  grid-area: header;
   max-height: 2.5em;
   background-color: aquamarine;
   display: flex;
@@ -81,23 +83,22 @@ body {
 
 
 .history {
-  padding: 1.5em;
-  grid-area: history;
+  padding: 0 0.5em;
+  margin-bottom: 0.5em;
+
+  flex-grow: 1;
   background-color: white;
   max-height: calc(100vh-200px);
   overflow-y: scroll;
 }
 
 .text-input {
-  grid-area: text-input;
   background-color: whitesmoke;
-  width: 100%;
 }
 
 .username {
   color: red;
   text-decoration: underline;
-  margin-left: -1em;
 }
 
 .my-username {
@@ -106,40 +107,53 @@ body {
 
 .usermsg {
   padding-bottom: 0;
-  padding-top: 1em;
+  padding-top: 0.25em;
 }
 
 .markdown-preview {
   display: flex;
   align-items: center;
+  padding-left: 0.5em;
 }
 
 .message {
   padding-left: 0.5em;
   display: flex;
   flex-direction: column;
-  border-top: 1px dashed black;
 }
 
 .message-content {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 0.1em 0;
 }
 
 .message-buttons {
-  display: flex;
+  display: none;
   max-height: 3.5em;
   max-width: 10em;
+}
+
+.message:hover .message-buttons {
+  display: flex;
+}
+.message:focus .message-buttons {
+  display: flex;
+}
+
+.message:active .message-buttons {
+  display: flex;
 }
 
 .message-input {
   width: 100%;
   color: black;
   border: 2px solid black;
-  margin: 1em;
+  margin: 0.5em 0.5em;
   padding: 1em 1em;
   background-color: white;
+  flex-grow: 1;
 }
 
 .preview-button {
@@ -150,7 +164,8 @@ body {
 
 .preview-box {
   border: 2px solid black;
-  margin: 1em;
+  margin: 0.5em 0.5em;
+  margin-bottom: 0;
   padding: 0.5em;
   background-color: white;
   display: flex;
@@ -165,32 +180,32 @@ body {
 .send-message-button {
   border: 2px outset black;
   height: 100%;
-  padding: 1em;
-  margin: 1em 1em;
+  padding: 0.75em 0.25em;
   color: black;
   background-color: white;
 }
 
+.message-reply-box {
+  padding-left: 0.3em;
+  width: max-content;
+}
+
 .message-reply {
-  margin: 0.5em 0;
+  margin-top: 0.1em;
   font-size: 16px;
   background-color: LightYellow;
   border: 2px solid black;
-  padding: 0.5em;
+  padding: 0.25em 0.5em;
 }
 
 @media only screen and (min-width: 500px)  {
   .chat-container {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-template-areas: "header header" "history sidebar" "text-input text-input";
+    width: 80vw;
+    margin: auto;
   }
-  .user-list {
-    flex-direction: column;
-    overflow-y: scroll;
-    border: 2px solid black;
-  }
+  .history {
+    padding: 2em 5em;
+  } 
   .message-content {
     flex-direction: row;
   }
@@ -202,6 +217,14 @@ body {
 }
 
 
+@media only screen and (min-width: 1400px)  {
+  .chat-container {
+    width: 40vw;
+  }
+  .history {
+    padding: 2em 10em;
+  } 
+}
 
 /* html element styles */
 img {

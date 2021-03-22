@@ -7,7 +7,8 @@
 (defn chat-input
   "Allow users to input text and submit it to send messages."
   [app-state reply-to]
-  (let [v (atom nil)]
+  (let [v (atom nil)
+        input-id "message-input-box"]
     (fn []
       [:div {:class "text-input"}
        (if @reply-to
@@ -28,6 +29,7 @@
                        :flex-direction "row"}}
          [:input {:type "text"
                   :value @v
+                  :id input-id
                   :class "message-input"
                   :placeholder "Type a message..."
                   :on-change #(reset! v (-> % .-target .-value))}]

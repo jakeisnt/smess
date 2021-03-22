@@ -4,7 +4,7 @@
    [cljs.core.async :as async :include-macros true]
    [chord.client :refer [ws-ch]]))
 
-(goog-define ws-url "wss://clojure-smess.herokuapp.com/ws")
+(goog-define ws-url "ws://localhost:3449/ws")
 (defonce send-chan (async/chan))
 
 ;; Websocket Routines
