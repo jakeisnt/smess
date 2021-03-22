@@ -60,7 +60,6 @@
     (.select elem)
     (.focus elem)))
 
-;; TODO the color doesn't work because this isn't a component.
 (defn- message
   "A single message."
   [m selected-message]
