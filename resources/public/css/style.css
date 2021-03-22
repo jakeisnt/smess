@@ -46,31 +46,28 @@ body {
 
 /* chat flow */
 .chat-container {
-  display: grid;
   width: 100vw;
   height: 100vh;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr;
-  grid-template-areas: "header" "sidebar" "history" "text-input";
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar {
-  grid-area: sidebar;
-  background-color: white;
-  border-bottom: 2px solid black;
+  background-color: whitesmoke;
 }
 
 .user-list {
-  padding: 0;
-  margin: 0;
+  padding: 0.5em;
   display: flex;
   flex-direction: row;
-  overflow-x: scroll:
+}
+
+.userlist-username {
+  padding: 0 1em;
 }
 
 .header {
   user-select: none;
-  grid-area: header;
   max-height: 2.5em;
   background-color: aquamarine;
   display: flex;
@@ -81,15 +78,14 @@ body {
 
 
 .history {
-  padding: 1.5em;
-  grid-area: history;
+  padding: 0 0.5em;
+  flex-grow: 1;
   background-color: white;
   max-height: calc(100vh-200px);
   overflow-y: scroll;
 }
 
 .text-input {
-  grid-area: text-input;
   background-color: whitesmoke;
   width: 100%;
 }
@@ -97,7 +93,6 @@ body {
 .username {
   color: red;
   text-decoration: underline;
-  margin-left: -1em;
 }
 
 .my-username {
@@ -118,7 +113,6 @@ body {
   padding-left: 0.5em;
   display: flex;
   flex-direction: column;
-  border-top: 1px dashed black;
 }
 
 .message-content {
@@ -180,17 +174,6 @@ body {
 }
 
 @media only screen and (min-width: 500px)  {
-  .chat-container {
-    display: grid;
-    width: 100vw;
-    height: 100vh;
-    grid-template-areas: "header header" "history sidebar" "text-input text-input";
-  }
-  .user-list {
-    flex-direction: column;
-    overflow-y: scroll;
-    border: 2px solid black;
-  }
   .message-content {
     flex-direction: row;
   }
@@ -200,8 +183,6 @@ body {
     padding-bottom: 0;
   }
 }
-
-
 
 /* html element styles */
 img {

@@ -6,6 +6,8 @@
   "Shows all of the users currently in the channel."
   [users app-state]
   [:div {:class "sidebar"}
-   [:div {:class "user-list"}
-    (doall (for [[k v] @users]
-             ^{:key k} (username-box v app-state)))]])
+   [:marquee {:direction "right"}
+    [:div {:class "user-list"}
+     (doall (for [[k v] @users]
+              [:div {:class "userlist-username"}
+               ^{:key k} (username-box v app-state)]))]]])
