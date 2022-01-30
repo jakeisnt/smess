@@ -1,6 +1,7 @@
-DEPRECATED: now at https://github.com/isntweb/home
+# DEPRECATED
+the site can now be found at https://github.com/isntweb/home
 
-
+# previous readme notes
 - public only chats - don't owrry about privacy
 - able to link messages and share them on twitter
 - link goes to conversation
