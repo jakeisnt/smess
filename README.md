@@ -1,3 +1,6 @@
+DEPRECATED: now at https://github.com/isntweb/home
+
+
 - public only chats - don't owrry about privacy
 - able to link messages and share them on twitter
 - link goes to conversation
