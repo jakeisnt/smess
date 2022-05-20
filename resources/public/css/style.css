@@ -15,7 +15,7 @@ body {
   width: 100vw;
   height: 100vh;
   grid-template-rows: 0.75fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr; 
+  grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas: ". error-tip-container ." ". login ." ". . .";
 }
 
@@ -200,12 +200,12 @@ body {
 
 @media only screen and (min-width: 500px)  {
   .chat-container {
-    width: 80vw;
+    /* width: 80vw; */
     margin: auto;
   }
   .history {
     padding: 2em 5em;
-  } 
+  }
   .message-content {
     flex-direction: row;
   }
@@ -223,7 +223,7 @@ body {
   }
   .history {
     padding: 2em 10em;
-  } 
+  }
 }
 
 /* html element styles */
