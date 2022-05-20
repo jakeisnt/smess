@@ -8,7 +8,7 @@
   "Focus an HTML element with the provided ID."
   [elem-id]
   (let
-    [elem (-> js/document .getElementById elem-id)]
+    [elem (.getElementById js/document elem-id)]
     (.select elem)
     (.focus elem)))
 
