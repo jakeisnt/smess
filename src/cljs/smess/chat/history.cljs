@@ -1,13 +1,14 @@
 (ns smess.chat.history
   (:require
    [reagent.core :as reagent]
-   [smess.chat.utils :refer [to-clipboard]]
+   [smess.utils :refer [to-clipboard focus-element]]
    [smess.chat.username :refer [username-box]]
    [smess.chat.reply :refer [message-reply]]
+   [smess.chat.input :refer [input-box-name]]
    [smess.chat.markdown :refer [markdown-preview]]))
 
 (defn- flip-group-chat-results
-  "Flip the results of 'group-chats' to display chats top down."
+  "Flip the results of 'group-chats' to display chat messages from first sent to most recent."
   [msglists]
   (reverse (map (fn [elem] {:user (:user elem)
                             :id (:id elem)
@@ -52,13 +53,6 @@
             ;; start with an empty user and list
            {:user "" :list '()} message-list))))
 
-(defn focus-element
-  "Focus an HTML element with the provided ID."
-  [elem-id]
-  (let
-   [elem (.getElementById js/document elem-id)]
-    (.select elem)
-    (.focus elem)))
 
 (defn- message
   "A single message."
@@ -69,9 +63,8 @@
                      :id (str "msg-" (:id m))
                      :class "message"
                      :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
-               (if (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))] nil)
-               [:div {:class "message-content"
-                      :key (str "message-content" (:id m))}
+               (and (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))])
+               [:div {:class "message-content" :key (str "message-content-" (:id m))}
                 (markdown-preview (:msg m))
                 [:div {:class "message-buttons"
                        :key (str "message-buttons" (:id m))}
@@ -81,10 +74,11 @@
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick (fn [] (if (= @selected-message m)
-                                             (reset! selected-message nil)
-                                             (reset! selected-message m))
-                                      (focus-element "message-input-box"))}
+                           :onClick (fn []
+                                      (if (= @selected-message m)
+                                          (reset! selected-message nil)
+                                          (reset! selected-message m))
+                                      (focus-element input-box-name))}
                   "reply"]]]])}))
 
 (defn chat-history
@@ -94,14 +88,14 @@
    {:render (fn []
               [:div {:class "history"}
                (doall (for [usermsg (group-chats @msg-list)]
-                        [:div {:key (str (:user usermsg) "-" (:id usermsg))
-                               :class "usermsg"}
+                        [:div {:key (str (:user usermsg) "-" (:id usermsg)) :class "usermsg"}
                          (username-box (:user usermsg) app-state)
-                         (for [m (:messages usermsg)]
 
+                         (for [m (:messages usermsg)]
                            ^{:key (str "msg-" (:id m))}
                            [message m selected-message])]))])
 
-    :component-did-update (fn [this]
-                            (let [node (reagent/dom-node this)]
-                              (set! (.-scrollTop node) (.-scrollHeight node))))}))
+    ; :component-did-update (fn [this]
+    ;                         (let [node (reagent/dom-node this)]
+    ;                           (set! (.-scrollTop node) (.-scrollHeight node))))
+    }))
