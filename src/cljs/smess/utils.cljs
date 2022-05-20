@@ -15,3 +15,8 @@
 (defn to-clipboard
   "Copy a line of text to the clipboard."
   [txt] (.writeText (.-clipboard js/navigator) txt))
+
+(defn scroll-to-top
+  "Scroll a specific DOM element to the top of the page."
+  [elem]
+  (set! (.-scrollTop node) (.-scrollHeight node)))

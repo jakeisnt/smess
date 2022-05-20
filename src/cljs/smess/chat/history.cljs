@@ -74,12 +74,12 @@
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick (fn []
-                                      (if (= @selected-message m)
+                           :onClick #((if (= @selected-message m)
                                           (reset! selected-message nil)
                                           (reset! selected-message m))
                                       (focus-element input-box-name))}
                   "reply"]]]])}))
+
 
 (defn chat-history
   "Display the history of the chat."
@@ -93,9 +93,4 @@
 
                          (for [m (:messages usermsg)]
                            ^{:key (str "msg-" (:id m))}
-                           [message m selected-message])]))])
-
-    ; :component-did-update (fn [this]
-    ;                         (let [node (reagent/dom-node this)]
-    ;                           (set! (.-scrollTop node) (.-scrollHeight node))))
-    }))
+                           [message m selected-message])]))])}))
