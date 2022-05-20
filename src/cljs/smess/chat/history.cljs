@@ -62,7 +62,7 @@
               [:div {:key (str "msg-" (:id m))
                      :id (str "msg-" (:id m))
                      :class "message"
-                     :style {:background-color (if (= (:id m) (:id @selected-message)) "azure" nil)}}
+                     :style {:background-color (and (= (:id m) (:id @selected-message)) "azure")}}
                (and (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))])
                [:div {:class "message-content" :key (str "message-content-" (:id m))}
                 (markdown-preview (:msg m))
@@ -70,7 +70,7 @@
                        :key (str "message-buttons" (:id m))}
                  [:button {:key (str (:id m) "-text-button")
                            :class "text-button"
-                           :onClick (fn [] (to-clipboard (:msg m)))}
+                           :onClick #((to-clipboard (:msg m)))}
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")

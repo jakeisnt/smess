@@ -6,7 +6,6 @@
 
 (defonce input-box-name "message-input-box")
 
-
 (defn chat-input
   "Allow users to input text and submit it to send messages."
   [app-state reply-to]
@@ -18,8 +17,8 @@
        (and @cur-msg
          [:div {:class "preview-box"} (markdown-preview @cur-msg)])
        [:form
-        {:on-submit (fn [x]
-                      (.preventDefault x)
+        {:on-submit (fn [event]
+                      (.preventDefault event)
                       (when-let [msg @cur-msg]
                         (send-msg {:msg msg
                                    :reply-to @reply-to

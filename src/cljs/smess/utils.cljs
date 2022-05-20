@@ -8,15 +8,17 @@
   "Focus an HTML element with the provided ID."
   [elem-id]
   (let
-   [elem (.getElementById js/document elem-id)]
+    [elem (-> js/document .getElementById elem-id)]
     (.select elem)
     (.focus elem)))
 
 (defn to-clipboard
+  ;; TODO doesn't work right now
   "Copy a line of text to the clipboard."
-  [txt] (.writeText (.-clipboard js/navigator) txt))
+  [txt]
+  (-> js/navigator .-clipboard .writeText txt))
 
 (defn scroll-to-top
   "Scroll a specific DOM element to the top of the page."
   [elem]
-  (set! (.-scrollTop node) (.-scrollHeight node)))
+  (set! (.-scrollTop elem) (.-scrollHeight elem)))
