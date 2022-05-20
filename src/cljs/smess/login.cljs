@@ -17,32 +17,32 @@
 (defn login-view
   "Allows users to pick a username and enter the chat."
   [app-state msg-list users]
-  (let [v (atom (:username (cookie->clj!)))
+  (let [username (atom (:username (cookie->clj!)))
         notif-error (atom nil)]
     (fn []
       [:div {:class "login-container"}
        [:form
         {:class "login"
-         :on-submit (fn [x]
-                      (.preventDefault x)
+         :on-submit (fn [event]
+                      (.preventDefault event)
                        ;; if the user exists, they can enter the application.
                       (let
-                       [username-error (get-invalid-username-error @v)]
-                        (if (and @v (not username-error))
+                       [username-error (get-invalid-username-error @username)]
+                        (if (and @username (not username-error))
                           (do
-                            (swap! app-state assoc :user @v)
+                            (swap! app-state assoc :user @username)
                             (swap! app-state assoc :active-panel :chat)
-                            (add-cookie! {:username @v :samesite "Strict"})
+                            (add-cookie! {:username @username :samesite "Strict"})
                             (enable-notifications)
                             (setup-websockets! app-state msg-list users))
                           (reset! notif-error username-error))))}
         [:input {:type "text"
                  :class "username-input"
-                 :value @v
+                 :value @username
                  :placeholder "Pick a username"
                  :on-change #(let
                               [val (-> % .-target .-value)]
-                               (reset! v val)
+                               (reset! username val)
                                (reset! notif-error (get-invalid-username-error val)))}]
         [:button {:type "submit"
                   :onClick enable-notifications
