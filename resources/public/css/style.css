@@ -1,21 +1,14 @@
-@import url("https://jakeisnt.github.io/styles/main.css");
-body {
-  height: 100vh;
-  width: 100vw;
-  font-size: 16px;
-  margin: 0;
-  padding: 0;
-}
-
 #app {
   background-color: whitesmoke;
+  height: 20em;
+  width: 40em;
+  border: 2px solid black;
+  overflow-y: scroll;
 }
 
 /* login flow */
 .login-container {
   display: grid;
-  width: 100vw;
-  height: 100vh;
   grid-template-rows: 0.75fr 1fr 1fr;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-areas: ". error-tip-container ." ". login ." ". . .";
@@ -58,8 +51,6 @@ body {
 
 /* chat flow */
 .chat-container {
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -92,15 +83,14 @@ body {
 .history {
   padding: 0 0.5em;
   margin-bottom: 0.5em;
-
-  flex-grow: 1;
   background-color: white;
-  max-height: calc(100vh-200px);
   overflow-y: scroll;
 }
 
 .text-input {
   background-color: whitesmoke;
+  display: absolute;
+  bottom: 0;
 }
 
 .username {
@@ -212,6 +202,7 @@ body {
   }
   .history {
     padding: 2em 5em;
+    overflow: scroll;
   }
   .message-content {
     flex-direction: row;
