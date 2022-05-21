@@ -13,10 +13,11 @@
     (.focus elem)))
 
 (defn to-clipboard
-  ;; TODO doesn't work right now
   "Copy a line of text to the clipboard."
   [txt]
-  (-> js/navigator .-clipboard .writeText txt))
+  (->> js/navigator
+       .-clipboard
+       (.writeText ,,, txt)))
 
 (defn scroll-to-top
   "Scroll a specific DOM element to the top of the page."

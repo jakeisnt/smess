@@ -25,8 +25,8 @@
     [:.login-container
      [:form
       {:class "login"
-       :on-submit (fn [event]
-                    (.preventDefault event)
+       :on-submit (fn [e]
+                    (.preventDefault e)
                     ;; if the user exists, they can enter the application.
                     (let
                       [username-error (get-invalid-username-error @username)]

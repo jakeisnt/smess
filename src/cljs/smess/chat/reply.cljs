@@ -12,6 +12,5 @@
 (rum/defc message-reply
   ;; A reply to a previous message.
   [msg]
-  [:div {:class "message-reply"
-         :on-click (fn [] (scroll-to-last-reply (:id msg)))}
+  [:.message-reply {:on-click #((scroll-to-last-reply (:id msg)))}
    (str "> " (:user msg) ": " (:msg msg))])

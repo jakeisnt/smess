@@ -57,9 +57,10 @@
 (rum/defc message
   "A single message."
   [m selected-message]
+  (println m)
   [:.message {:id (str "msg-" (:id m))
               :style {:background-color (and (= (:id m) (:id @selected-message)) "azure")}}
-   (and (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))])
+   (and (:reply-to m) [:.message-reply-box (message-reply (:reply-to m))])
    [:.message-content (markdown-preview (:msg m))
     [:.message-buttons
      [:button {:class "text-button"
