@@ -79,14 +79,13 @@
       "reply"]]]])
 
 
-(rum/defc chat-history
+(rum/defc chat-history < rum/reactive
   "Display the history of the chat."
   [msg-list app-state selected-message]
-  [:div {:class "history"}
-   (doall (for [usermsg (group-chats @msg-list)]
-            [:div {:key (str (:user usermsg) "-" (:id usermsg)) :class "usermsg"}
+  (println msg-list)
+  [:.history
+   (doall (for [usermsg (group-chats (rum/react msg-list))]
+            [:.usermsg {:key (str (:user usermsg) "-" (:id usermsg))}
              (username-box (:user usermsg) app-state)
-
              (for [m (:messages usermsg)]
-               ^{:key (str "msg-" (:id m))}
-               [message m selected-message])]))])
+               (rum/with-key (message m selected-message) (str "msg-" (:id m))))]))])

@@ -6,9 +6,10 @@
 (rum/defc sidebar < rum/reactive
   "Shows all of the users currently in the channel."
   [users app-state]
-  [:div {:class "sidebar"}
+  [:.sidebar
    [:marquee {:direction "right"}
-    [:div {:class "user-list"}
+    [:.user-list
+     ;; TODO unique usernames? unique keys?
      (doall (for [[k v] (rum/react users)]
-              [:div {:class "userlist-username"}
-               ^{:key k} (username-box v app-state)]))]]])
+              [:.userlist-username
+               (rum/with-key (username-box v app-state) k)]))]]])

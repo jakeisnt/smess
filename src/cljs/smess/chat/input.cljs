@@ -5,9 +5,7 @@
    [rum.core :as rum]))
 
 (defonce input-box-name "message-input-box")
-
 (def cur-msg (atom ""))
-
 
 (rum/defcs chat-input < rum/reactive
   "Allow users to input text and submit it to send messages."

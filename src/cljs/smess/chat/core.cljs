@@ -8,7 +8,7 @@
 ;; the currently selected message to reply to
 (defonce reply-to-message (atom nil))
 
-(rum/defc chat-view
+(rum/defc chat-view < rum/reactive
   "Displays all of the chat history."
   [app-state msg-list users]
   [:.chat-container
