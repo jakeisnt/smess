@@ -1,5 +1,8 @@
 (ns smess.cookies)
 
+;; TODO this should all be behind an atom,
+;; and should probably use browser local storage instead of this
+
 (defn get-cookie!
   "Get the document's cookie."
   [] (.-cookie js/document))

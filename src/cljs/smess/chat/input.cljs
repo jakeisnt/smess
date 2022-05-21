@@ -4,12 +4,12 @@
    [smess.sockets :refer [send-msg]]
    [rum.core :as rum]))
 
-(defonce input-box-name "message-input-box")
-(def cur-msg (atom ""))
+(def ^:const input-box-name "message-input-box")
+(defonce cur-msg (atom ""))
 
-(rum/defcs chat-input < rum/reactive
+(rum/defc chat-input < rum/reactive
   "Allow users to input text and submit it to send messages."
-  [state app-state reply-to]
+  [app-state reply-to]
       [:.text-input
        (and (rum/react reply-to)
          [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
