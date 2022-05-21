@@ -57,22 +57,16 @@
 (rum/defc message
   "A single message."
   [m selected-message]
-  [:div {:key (str "msg-" (:id m))
-         :id (str "msg-" (:id m))
-         :class "message"
-         :style {:background-color (and (= (:id m) (:id @selected-message)) "azure")}}
+  [:.message {:id (str "msg-" (:id m))
+              :style {:background-color (and (= (:id m) (:id @selected-message)) "azure")}}
    (and (:reply-to m) [:div {:class "message-reply-box"} (message-reply (:reply-to m))])
-   [:div {:class "message-content" :key (str "message-content-" (:id m))}
-    (markdown-preview (:msg m))
-    [:div {:class "message-buttons"
-           :key (str "message-buttons" (:id m))}
-     [:button {:key (str (:id m) "-text-button")
-               :class "text-button"
+   [:.message-content (markdown-preview (:msg m))
+    [:.message-buttons
+     [:button {:class "text-button"
                :on-click #((to-clipboard (:msg m)))}
       "copy text"]
-     [:button {:key (str (:id m) "-link-button")} "copy link"]
-     [:button {:key (str (:id m) "-reply-button")
-               :on-click #((if (= @selected-message m)
+     [:button "copy link"]
+     [:button {:on-click #((if (= @selected-message m)
                              (reset! selected-message nil)
                              (reset! selected-message m))
                            (focus-element input-box-name))}
