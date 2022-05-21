@@ -16,7 +16,7 @@
 
 (rum/defcs login-view
   < rum/reactive
-    (rum/local (:username (cookie->clj!)) ::username)
+    (rum/local (:username (or (cookie->clj!) "")) ::username)
     (rum/local nil ::notif-error)
   "Allows users to pick a username and enter the chat."
   [state app-state msg-list users]

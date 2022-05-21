@@ -1,10 +1,12 @@
-(ns smess.chat.username)
+(ns smess.chat.username
+  (:require
+    [rum.core :as rum]))
 
-(defn username-box
+(rum/defc username-box < rum/reactive
   "An interactive box containing the username."
   [username app-state]
   [:p {:key username
-       :class (str "username" (and (= (:user @app-state) username) " my-username"))}
-   (if (= (:user @app-state) username)
+       :class (str "username" (and (= (:user (rum/react app-state)) username) " my-username"))}
+   (if (= (:user (rum/react app-state)) username)
      (str "me [ " username " ]")
      username)])

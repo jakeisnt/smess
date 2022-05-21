@@ -6,13 +6,15 @@
 
 (defonce input-box-name "message-input-box")
 
-(rum/defc chat-input
+(rum/defcs chat-input
+  < rum/reactive
+    (rum/local "" ::cur-msg)
   "Allow users to input text and submit it to send messages."
-  [app-state reply-to]
-  (let [cur-msg (atom nil)]
+  [state app-state reply-to]
+  (let [cur-msg (::cur-msg state)]
       [:div {:class "text-input"}
-       (and @reply-to
-         [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
+       (and reply-to
+         [:div {:class "reply-preview preview-box"} (str "> " (:user (rum/react reply-to)) ": ") (markdown-preview (:msg (rum/react reply-to)))])
        (and @cur-msg
          [:div {:class "preview-box"} (markdown-preview @cur-msg)])
        [:form
@@ -33,7 +35,7 @@
                   :class "message-input"
                   :placeholder "Type a message..."
                   :on-change #(reset! cur-msg (-> % .-target .-value))}]
-         (and @reply-to
+         (and (rum/react reply-to)
            [:button {:class "send-message-button"
                      :on-click #(reset! reply-to nil)} "Deselect"])
          [:button {:type "submit"
