@@ -26,6 +26,7 @@
      [:form
       {:class "login"
        :on-submit (fn [event]
+                    (println "submitted form!")
                     (.preventDefault event)
                     ;; if the user exists, they can enter the application.
                     (let

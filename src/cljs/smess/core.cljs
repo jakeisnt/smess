@@ -12,10 +12,10 @@
 (defonce users (atom {}))
 
 
-(rum/defc window
+(rum/defc window < rum/reactive
   "Router for the front-end application with different views, etc."
   []
-   (case (:active-panel @app-state)
+   (case (:active-panel (rum/react app-state))
      :login (login-view app-state msg-list users)
      :chat (chat-view app-state msg-list users)))
 
