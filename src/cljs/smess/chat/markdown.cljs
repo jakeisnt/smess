@@ -1,8 +1,9 @@
 (ns smess.chat.markdown
   (:require
+   [rum.core :as rum]
    [markdown.core :refer [md->html]]))
 
-(defn markdown-preview
+(rum/defc markdown-preview
   "A window to preview chat input in markdown."
   [txt]
   [:div {:class "markdown-preview"

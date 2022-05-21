@@ -10,7 +10,6 @@
   "Allow users to input text and submit it to send messages."
   [app-state reply-to]
   (let [cur-msg (atom nil)]
-    (fn []
       [:div {:class "text-input"}
        (and @reply-to
          [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
@@ -38,4 +37,4 @@
            [:button {:class "send-message-button"
                      :on-click #(reset! reply-to nil)} "Deselect"])
          [:button {:type "submit"
-                   :class "send-message-button"} "Send"]]]])))
+                   :class "send-message-button"} "Send"]]]]))

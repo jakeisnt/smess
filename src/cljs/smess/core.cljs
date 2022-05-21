@@ -1,8 +1,8 @@
 (ns smess.core
   (:require
-   [smess.login :refer [login-view]]
-   [smess.chat.core :refer [chat-view]]
-   [rum.core :as rum]))
+    [smess.login :refer [login-view]]
+    [smess.chat.core :refer [chat-view]]
+    [rum.core :as rum]))
 
 (defonce app-state (atom {:text "Hello world!"
                           :active-panel :login
@@ -15,9 +15,10 @@
 (rum/defc window
   "Router for the front-end application with different views, etc."
   []
-  (case (:active-panel @app-state)
-    :login [login-view app-state msg-list users]
-    :chat  [chat-view app-state msg-list users]))
+   (case (:active-panel @app-state)
+     :login (login-view app-state msg-list users)
+     :chat (chat-view app-state msg-list users)))
+
 
 (defn mount []
   (rum/mount (window) (. js/document (getElementById "app"))))

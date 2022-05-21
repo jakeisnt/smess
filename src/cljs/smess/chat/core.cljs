@@ -12,7 +12,7 @@
   "Displays all of the chat history."
   [app-state msg-list users]
   [:.chat-container
-   [:div {:class "header"} [:h3 "SMESS"]]
-   [sidebar users app-state]
-   [chat-history msg-list app-state reply-to-message]
-   [chat-input app-state reply-to-message]])
+   [:.header [:h3 "SMESS"]]
+   (sidebar users app-state)
+   (chat-history msg-list app-state reply-to-message)
+   (chat-input app-state reply-to-message)])
