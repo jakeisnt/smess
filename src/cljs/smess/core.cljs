@@ -2,7 +2,7 @@
   (:require
    [smess.login :refer [login-view]]
    [smess.chat.core :refer [chat-view]]
-   [reagent.core :as reagent :refer [atom]]))
+   [rum.core :as rum]))
 
 (defonce app-state (atom {:text "Hello world!"
                           :active-panel :login
@@ -11,12 +11,17 @@
 (defonce msg-list (atom []))
 (defonce users (atom {}))
 
-(defn app-container
-  "The entire front-end application with all of the different views."
+
+(rum/defc window
+  "Router for the front-end application with different views, etc."
   []
   (case (:active-panel @app-state)
     :login [login-view app-state msg-list users]
-    :chat [chat-view app-state msg-list users]))
+    :chat  [chat-view app-state msg-list users]))
 
-(reagent/render-component [app-container]
-                          (. js/document (getElementById "app")))
+(defn mount []
+  (rum/mount (window) (. js/document (getElementById "app"))))
+
+(mount)
+
+; (defn ^:export start [] (mount))

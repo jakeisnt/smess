@@ -1,6 +1,6 @@
 (ns smess.chat.history
   (:require
-   [reagent.core :as reagent]
+   [rum.core :as rum]
    [smess.utils :refer [to-clipboard focus-element]]
    [smess.chat.username :refer [username-box]]
    [smess.chat.reply :refer [message-reply]]
@@ -54,10 +54,9 @@
            {:user "" :list '()} message-list))))
 
 
-(defn- message
+(rum/defc message
   "A single message."
   [m selected-message]
-  (reagent/create-class
    {:render (fn []
               [:div {:key (str "msg-" (:id m))
                      :id (str "msg-" (:id m))
@@ -70,21 +69,20 @@
                        :key (str "message-buttons" (:id m))}
                  [:button {:key (str (:id m) "-text-button")
                            :class "text-button"
-                           :onClick #((to-clipboard (:msg m)))}
+                           :on-click #((to-clipboard (:msg m)))}
                   "copy text"]
                  [:button {:key (str (:id m) "-link-button")} "copy link"]
                  [:button {:key (str (:id m) "-reply-button")
-                           :onClick #((if (= @selected-message m)
+                           :on-click #((if (= @selected-message m)
                                           (reset! selected-message nil)
                                           (reset! selected-message m))
                                       (focus-element input-box-name))}
-                  "reply"]]]])}))
+                  "reply"]]]])})
 
 
-(defn chat-history
+(rum/defc chat-history
   "Display the history of the chat."
   [msg-list app-state selected-message]
-  (reagent/create-class
    {:render (fn []
               [:div {:class "history"}
                (doall (for [usermsg (group-chats @msg-list)]
@@ -93,4 +91,4 @@
 
                          (for [m (:messages usermsg)]
                            ^{:key (str "msg-" (:id m))}
-                           [message m selected-message])]))])}))
+                           [message m selected-message])]))])})

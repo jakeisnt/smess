@@ -1,4 +1,7 @@
-(ns smess.chat.reply)
+(ns smess.chat.reply
+  (:require
+    [rum.core :as rum])
+  )
 
 (defn scroll-to-last-reply
   "Scroll to center the element clicked onto the page."
@@ -6,9 +9,9 @@
   (.scrollIntoView (.getElementById js/document (str "msg-" id))
                    (clj->js {:behavior "smooth" :inline "center" :block "center"})))
 
-(defn message-reply
+(rum/defc message-reply
   ;; A reply to a previous message.
   [msg]
   [:div {:class "message-reply"
-         :onClick (fn [] (scroll-to-last-reply (:id msg)))}
+         :on-click (fn [] (scroll-to-last-reply (:id msg)))}
    (str "> " (:user msg) ": " (:msg msg))])

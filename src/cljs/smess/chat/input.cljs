@@ -2,11 +2,11 @@
   (:require
    [smess.chat.markdown :refer [markdown-preview]]
    [smess.sockets :refer [send-msg]]
-   [reagent.core :as reagent :refer [atom]]))
+   [rum.core :as rum]))
 
 (defonce input-box-name "message-input-box")
 
-(defn chat-input
+(rum/defc chat-input
   "Allow users to input text and submit it to send messages."
   [app-state reply-to]
   (let [cur-msg (atom nil)]
@@ -36,6 +36,6 @@
                   :on-change #(reset! cur-msg (-> % .-target .-value))}]
          (and @reply-to
            [:button {:class "send-message-button"
-                     :onClick #(reset! reply-to nil)} "Deselect"])
+                     :on-click #(reset! reply-to nil)} "Deselect"])
          [:button {:type "submit"
                    :class "send-message-button"} "Send"]]]])))

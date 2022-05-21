@@ -4,7 +4,7 @@
    [smess.sockets :refer [setup-websockets!]]
    [smess.cookies :refer [cookie->clj! add-cookie!]]
    [smess.notifications :refer [enable-notifications]]
-   [reagent.core :as reagent :refer [atom]]))
+   [rum.core :as rum]))
 
 (defn get-invalid-username-error
   "Gets the error associated with an invalid username if there is one."
@@ -14,12 +14,11 @@
     (ormap (partial = " ") (.split val "")) "The username should not include spaces."
     :else nil))
 
-(defn login-view
+(rum/defc login-view
   "Allows users to pick a username and enter the chat."
   [app-state msg-list users]
   (let [username (atom (:username (cookie->clj!)))
         notif-error (atom nil)]
-    (fn []
       [:div {:class "login-container"}
        [:form
         {:class "login"
@@ -45,6 +44,6 @@
                                (reset! username val)
                                (reset! notif-error (get-invalid-username-error val)))}]
         [:button {:type "submit"
-                  :onClick enable-notifications
+                  :on-click enable-notifications
                   :class "button-primary start-chatting-button"} "Start chatting"]]
-       [:div {:class "error-tip-container"} (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]])))
+       [:div {:class "error-tip-container"} (if @notif-error [:div {:class "error-tip"} @notif-error] nil)]]))
