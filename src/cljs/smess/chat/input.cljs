@@ -2,40 +2,35 @@
   (:require
    [smess.chat.markdown :refer [markdown-preview]]
    [smess.sockets :refer [send-msg]]
-   [reagent.core :as reagent :refer [atom]]))
+   [rum.core :as rum]))
 
-(defonce input-box-name "message-input-box")
+(def ^:const input-box-name "message-input-box")
+(defonce cur-msg (atom ""))
 
-(defn chat-input
+(rum/defc chat-input < rum/reactive
   "Allow users to input text and submit it to send messages."
   [app-state reply-to]
-  (let [cur-msg (atom nil)]
-    (fn []
-      [:div {:class "text-input"}
-       (and @reply-to
+      [:.text-input
+       (and (rum/react reply-to)
          [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
-       (and @cur-msg
-         [:div {:class "preview-box"} (markdown-preview @cur-msg)])
+       (and @cur-msg (not (= @cur-msg ""))
+         [:.preview-box (markdown-preview @cur-msg)])
        [:form
-        {:on-submit (fn [event]
-                      (.preventDefault event)
+        {:on-submit (fn [e]
+                      (.preventDefault e)
                       (when-let [msg @cur-msg]
                         (send-msg {:msg msg
-                                   :reply-to @reply-to
+                                   :reply-to (:id @reply-to) ;; TODO this is broken!
                                    :user (:user @app-state)
                                    :m-type :chat}))
-                      (reset! cur-msg nil)
+                      (reset! cur-msg "")
                       (reset! reply-to nil))}
-        [:div {:style {:display "flex"
-                       :flex-direction "row"}}
-         [:input {:type "text"
-                  :value @cur-msg
+        [:.flexrow
+         [:input.message-input {:type "text"
+                  :value (rum/react cur-msg)
                   :id input-box-name
-                  :class "message-input"
                   :placeholder "Type a message..."
-                  :on-change #(reset! cur-msg (-> % .-target .-value))}]
-         (and @reply-to
-           [:button {:class "send-message-button"
-                     :onClick #(reset! reply-to nil)} "Deselect"])
-         [:button {:type "submit"
-                   :class "send-message-button"} "Send"]]]])))
+                  :on-change (fn [e] (reset! cur-msg (.. e -target -value)))}]
+         (and (rum/react reply-to)
+           [:button.send-message-button {:type "notsubmit" :on-click #(reset! reply-to nil)} "Deselect"])
+         [:button.send-message-button {:type "submit"} "Send"]]]])
