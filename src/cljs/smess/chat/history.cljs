@@ -57,7 +57,6 @@
 (rum/defc message
   "A single message."
   [m selected-message]
-  (println m)
   [:.message {:id (str "msg-" (:id m))
               :style {:background-color (and (= (:id m) (:id @selected-message)) "azure")}}
    (and (:reply-to m) [:.message-reply-box (message-reply (:reply-to m))])
@@ -77,7 +76,6 @@
 (rum/defc chat-history < rum/reactive
   "Display the history of the chat."
   [msg-list app-state selected-message]
-  (println msg-list)
   [:.history
    (doall (for [usermsg (group-chats (rum/react msg-list))]
             [:.usermsg {:key (str (:user usermsg) "-" (:id usermsg))}

@@ -19,7 +19,6 @@
         {:on-submit (fn [event]
                       (.preventDefault event)
                       (when-let [msg @cur-msg]
-                        (println reply-to)
                         (send-msg {:msg msg
                                    :reply-to (:id @reply-to)
                                    :user (:user @app-state)
