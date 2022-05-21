@@ -6,5 +6,4 @@
 (rum/defc markdown-preview < rum/static
   "A window to preview chat input in markdown."
   [txt]
-  [:div {:class "markdown-preview"
-         :dangerouslySetInnerHTML {:__html (md->html txt)}}])
+  [:.markdown-preview {:dangerouslySetInnerHTML {:__html (md->html txt)}}])

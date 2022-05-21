@@ -16,24 +16,21 @@
        (and @cur-msg (not (= @cur-msg ""))
          [:.preview-box (markdown-preview @cur-msg)])
        [:form
-        {:on-submit (fn [event]
-                      (.preventDefault event)
+        {:on-submit (fn [e]
+                      (.preventDefault e)
                       (when-let [msg @cur-msg]
                         (send-msg {:msg msg
-                                   :reply-to (:id @reply-to)
+                                   :reply-to (:id @reply-to) ;; TODO this is broken!
                                    :user (:user @app-state)
                                    :m-type :chat}))
                       (reset! cur-msg "")
                       (reset! reply-to nil))}
         [:.flexrow
-         [:input {:type "text"
+         [:input.message-input {:type "text"
                   :value (rum/react cur-msg)
                   :id input-box-name
-                  :class "message-input"
                   :placeholder "Type a message..."
                   :on-change (fn [e] (reset! cur-msg (.. e -target -value)))}]
          (and (rum/react reply-to)
-           [:button {:class "send-message-button"
-                     :on-click #(reset! reply-to nil)} "Deselect"])
-         [:button {:type "submit"
-                   :class "send-message-button"} "Send"]]]])
+           [:button.send-message-button {:type "notsubmit" :on-click #(reset! reply-to nil)} "Deselect"])
+         [:button.send-message-button {:type "submit"} "Send"]]]])

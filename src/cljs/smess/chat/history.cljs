@@ -62,9 +62,7 @@
    (and (:reply-to m) [:.message-reply-box (message-reply (:reply-to m))])
    [:.message-content (markdown-preview (:msg m))
     [:.message-buttons
-     [:button {:class "text-button"
-               :on-click #((to-clipboard (:msg m)))}
-      "copy text"]
+     [:button.text-button {:on-click #((to-clipboard (:msg m)))} "copy text"]
      [:button "copy link"]
      [:button {:on-click #((if (= @selected-message m)
                              (reset! selected-message nil)
