@@ -12,7 +12,7 @@
   [app-state reply-to]
       [:.text-input
        (and (rum/react reply-to)
-         [:div {:class "reply-preview preview-box"} (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
+         [:.reply-preview.preview-box (str "> " (:user @reply-to) ": ") (markdown-preview (:msg @reply-to))])
        (and @cur-msg (not (= @cur-msg ""))
          [:.preview-box (markdown-preview @cur-msg)])
        [:form

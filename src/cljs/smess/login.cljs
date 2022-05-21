@@ -45,9 +45,8 @@
                              [val (-> % .-target .-value)]
                              (reset! username val)
                              (reset! notif-error (get-invalid-username-error val)))}]
-      [:button.start-chatting-button
+      [:button.start-chatting-button.button-primary
                {:type "submit"
-                :on-click enable-notifications
-                :class "button-primary"}
+                :on-click enable-notifications}
        "Start chatting"]]
      [:.error-tip-container (and @notif-error [:.error-tip @notif-error])]]))
