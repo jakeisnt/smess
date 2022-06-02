@@ -2,6 +2,7 @@
   (:require
     [smess.login :refer [login-view]]
     [smess.chat.core :refer [chat-view]]
+    [datascript.core :as d]
     [rum.core :as rum]))
 
 (defonce app-state (atom {:text "Hello world!"
@@ -10,6 +11,7 @@
 
 (defonce msg-list (atom []))
 (defonce users (atom {}))
+
 
 
 (rum/defcs window < rum/reactive
