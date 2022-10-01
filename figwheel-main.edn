@@ -1,0 +1,7 @@
+{:ring-handler
+ :rebel-readline false
+ :cljs-devtools false
+ :helpful-classpaths false
+ :validate-config false
+ :validate-cli false
+ }
